@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6. El dashboard: arquitectura y diseño &#8212; Predicción de enfermedad cardíaca – Informe del desarrollo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/autor.css?v=483c0dd5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'informe/6_dashboard';</script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="7. MLOps: API, Docker, Kubernetes e integración continua" href="7_mlops.html" />
+    <link rel="prev" title="5. Etapa 2 · Modelado con validación segura, exportación del modelo y monitoreo" href="../notebooks/2_model_pipeline_cv.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logoUN.png" class="logo__image only-light" alt="Predicción de enfermedad cardíaca – Informe del desarrollo - Home"/>
+    <script>document.write(`<img src="../_static/logoUN.png" class="logo__image only-dark" alt="Predicción de enfermedad cardíaca – Informe del desarrollo - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><!-- Tarjeta del autor en la barra lateral izquierda (visible en todas las páginas del libro) -->
+<div class="tarjeta-autor">
+  <img src="../_static/foto_author_DSR_sidebar.png" alt="Daniel Serrano Romero" class="tarjeta-autor__foto">
+  <div class="tarjeta-autor__nombre">Daniel Serrano Romero</div>
+  <div class="tarjeta-autor__detalle">Maestría en Matemáticas</div>
+  <div class="tarjeta-autor__detalle">Machine Learning</div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Búsqueda</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Predicción de enfermedad cardíaca: informe del desarrollo
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1_contexto.html">1. Contexto del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/3_informe_eda.html">2. Sección EDA del dashboard: figuras e interpretación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/4_informe_modelos.html">3. Sección ML Models del dashboard: resultados e interpretación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/1_model_leakage_demo.html">4. Etapa 1 · Análisis exploratorio, preprocesamiento y detección de <em>data leakage</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/2_model_pipeline_cv.html">5. Etapa 2 · Modelado con validación segura, exportación del modelo y monitoreo</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. El dashboard: arquitectura y diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_mlops.html">7. MLOps: API, Docker, Kubernetes e integración continua</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_conclusiones.html">8. Conclusiones</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/danielserrero2124-oss/dash_ml_dsr" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Repositorio de origen"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/informe/6_dashboard.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="claro/oscuro" aria-label="claro/oscuro" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>El dashboard: arquitectura y diseño</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-ejecutarlo">6.1. Cómo ejecutarlo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">6.2. Arquitectura</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#secciones-y-controles">6.3. Secciones y controles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactividad">6.4. Interactividad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-de-diseno-visual">6.5. Decisiones de diseño visual</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pruebas-del-dashboard">6.6. Pruebas del dashboard</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#publicacion">6.7. Publicación</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="el-dashboard-arquitectura-y-diseno">
+<h1><span class="section-number">6. </span>El dashboard: arquitectura y diseño<a class="headerlink" href="#el-dashboard-arquitectura-y-diseno" title="Link to this heading">#</a></h1>
+<p>Este capítulo documenta cómo está construido el dashboard, algo que el propio dashboard no
+muestra.</p>
+<section id="como-ejecutarlo">
+<h2><span class="section-number">6.1. </span>Cómo ejecutarlo<a class="headerlink" href="#como-ejecutarlo" title="Link to this heading">#</a></h2>
+<p>Desde la carpeta raíz del proyecto:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.venv<span class="se">\S</span>cripts<span class="se">\p</span>ython<span class="w"> </span>-m<span class="w"> </span>dashboard.app
+</pre></div>
+</div>
+<p>Se abre en <a class="reference external" href="http://localhost:8050">http://localhost:8050</a>. Los modelos ya están entrenados y guardados en
+<code class="docutils literal notranslate"><span class="pre">dashboard/artefactos.joblib</span></code>, por lo que arranca al instante. Para volver a entrenarlos:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.venv<span class="se">\S</span>cripts<span class="se">\p</span>ython<span class="w"> </span>-m<span class="w"> </span>dashboard.modelos
+</pre></div>
+</div>
+</section>
+<section id="arquitectura">
+<h2><span class="section-number">6.2. </span>Arquitectura<a class="headerlink" href="#arquitectura" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Archivo</p></th>
+<th class="head"><p>Responsabilidad</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dashboard/modelos.py</span></code></p></td>
+<td><p>Entrena los cuatro modelos sin fuga de datos, calcula métricas, curvas ROC, curvas de aprendizaje e importancias, y guarda todo en <code class="docutils literal notranslate"><span class="pre">artefactos.joblib</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dashboard/figuras.py</span></code></p></td>
+<td><p>Construye cada figura de Plotly con un estilo común</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dashboard/app.py</span></code></p></td>
+<td><p>Define la página (secciones y controles) y los <em>callbacks</em> que la hacen interactiva</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dashboard/assets/estilos.css</span></code></p></td>
+<td><p>Tema visual oscuro: tarjetas, pestañas, desplegables, deslizador y tablas</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dashboard/assets/corazon.svg</span></code></p></td>
+<td><p>Ilustración de portada, dibujada para el proyecto</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">src/modelado.py</span></code></p></td>
+<td><p>Funciones compartidas con los cuadernos: carga, partición, preprocesador y <code class="docutils literal notranslate"><span class="pre">train_pipeline</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El entrenamiento está separado de la aplicación. <code class="docutils literal notranslate"><span class="pre">modelos.py</span></code> hace el trabajo costoso una
+sola vez y <code class="docutils literal notranslate"><span class="pre">app.py</span></code> solo lee resultados. Así el dashboard responde de inmediato, y los
+números que muestra son exactamente los mismos en cada ejecución.</p>
+<p>Los modelos del dashboard y los de los cuadernos comparten el mismo código
+(<code class="docutils literal notranslate"><span class="pre">src/modelado.py</span></code>), de modo que no puede haber diferencias de preprocesamiento entre lo que
+se analiza y lo que se muestra.</p>
+</section>
+<section id="secciones-y-controles">
+<h2><span class="section-number">6.3. </span>Secciones y controles<a class="headerlink" href="#secciones-y-controles" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Sección</p></th>
+<th class="head"><p>Contenido</p></th>
+<th class="head"><p>Controles</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Contexto</strong></p></td>
+<td><p>Descripción e importancia, imagen, cuatro indicadores, diccionario de datos, etapas</p></td>
+<td><p>Ninguno (lectura)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>EDA</strong></p></td>
+<td><p>Cinco indicadores, variable objetivo, distribución numérica, variable categórica, dispersión, correlaciones, hallazgos</p></td>
+<td><p>Variable numérica, tipo de gráfico, excluir ceros, variable categórica, medida, eje X, eje Y</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>ML Models</strong></p></td>
+<td><p>Método, cinco indicadores, ROC, matriz de confusión, sobreajuste, curva de aprendizaje, ranking, importancia, predicción</p></td>
+<td><p>Modelo, umbral de decisión y los 11 datos del paciente</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="interactividad">
+<h2><span class="section-number">6.4. </span>Interactividad<a class="headerlink" href="#interactividad" title="Link to this heading">#</a></h2>
+<p>Cada control está conectado a una función de Python (<em>callback</em>) que recalcula solo lo
+necesario:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><em>Callback</em></p></th>
+<th class="head"><p>Entradas</p></th>
+<th class="head"><p>Qué actualiza</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">actualizar_numerica</span></code></p></td>
+<td><p>Variable, tipo de gráfico, filtro de ceros</p></td>
+<td><p>Distribución numérica por clase</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">actualizar_categorica</span></code></p></td>
+<td><p>Variable, medida</p></td>
+<td><p>Tasa de enfermedad o conteo por categoría</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">actualizar_dispersion</span></code></p></td>
+<td><p>Eje X, eje Y</p></td>
+<td><p>Diagrama de dispersión</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">actualizar_modelos</span></code></p></td>
+<td><p>Modelo, umbral</p></td>
+<td><p>Cinco indicadores, cinco figuras, ranking, hiperparámetros y lectura automática</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">predecir_paciente</span></code></p></td>
+<td><p>Modelo, umbral y 11 datos del paciente</p></td>
+<td><p>Medidor de probabilidad y resultado</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El umbral no reentrena nada: las probabilidades de test están guardadas, y al mover el
+deslizador solo se vuelve a contar cuántas superan el umbral.</p>
+</section>
+<section id="decisiones-de-diseno-visual">
+<h2><span class="section-number">6.5. </span>Decisiones de diseño visual<a class="headerlink" href="#decisiones-de-diseno-visual" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Tema oscuro unificado.</strong> Fondo, tarjetas, pestañas, desplegables, deslizador y tablas
+comparten una misma paleta definida como variables CSS.</p></li>
+<li><p><strong>El color identifica siempre lo mismo.</strong> Azul es «sano» y naranja es «enfermedad» en todas
+las figuras del EDA; cada modelo conserva su color en todas las figuras de ML Models.</p></li>
+<li><p><strong>Paleta apta para daltonismo.</strong> Los colores provienen de una paleta de referencia validada
+para las formas más comunes de daltonismo. Donde hay tres series de puntos (AUC en train,
+validación y test) se usa además un símbolo distinto para cada una.</p></li>
+<li><p><strong>Un solo eje por figura.</strong> No hay gráficos de doble eje. Para ver conteos y tasas de una
+variable categórica se cambia de medida con un botón.</p></li>
+<li><p><strong>Escalas con significado.</strong> Las correlaciones usan una escala divergente (azul, gris,
+rojo) con el gris en cero; la matriz de confusión, un solo tono que se aclara con el conteo.</p></li>
+<li><p><strong>Barras desde cero; puntos con eje acotado.</strong> Las barras siempre parten de cero. El AUC,
+que varía entre 0,90 y 1,00, se muestra con puntos para poder acercar el eje sin exagerar
+las diferencias.</p></li>
+<li><p><strong>Etiquetas directas y <em>tooltips</em>.</strong> Las barras llevan su valor escrito y todas las figuras
+muestran el detalle al pasar el cursor.</p></li>
+<li><p><strong>Lectura automática.</strong> Bajo el ranking, un texto generado explica el resultado del modelo
+seleccionado (incluido el caso particular de KNN).</p></li>
+</ul>
+</section>
+<section id="pruebas-del-dashboard">
+<h2><span class="section-number">6.6. </span>Pruebas del dashboard<a class="headerlink" href="#pruebas-del-dashboard" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">tests/test_dashboard.py</span></code> comprueba que los cuatro modelos están entrenados, que validación
+y test coinciden, que cada <em>callback</em> devuelve todos sus elementos, que el umbral mueve la
+sensibilidad y la especificidad en la dirección esperada y que el formulario de predicción
+valida los campos. Se ejecutan en cada <em>push</em> junto con las pruebas de la API.</p>
+</section>
+<section id="publicacion">
+<h2><span class="section-number">6.7. </span>Publicación<a class="headerlink" href="#publicacion" title="Link to this heading">#</a></h2>
+<p>Un dashboard de Dash necesita un servidor de Python, por lo que no puede alojarse en
+GitHub Pages. El archivo <code class="docutils literal notranslate"><span class="pre">render.yaml</span></code> permite publicarlo en Render: instala las
+dependencias y arranca <code class="docutils literal notranslate"><span class="pre">gunicorn</span> <span class="pre">dashboard.app:server</span></code>. La configuración se probó en un
+contenedor Linux con Python 3.10; el servicio usa unos 300 MB de memoria, dentro del límite
+del plan gratuito.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./informe"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../notebooks/2_model_pipeline_cv.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Etapa 2 · Modelado con validación segura, exportación del modelo y monitoreo</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="7_mlops.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>MLOps: API, Docker, Kubernetes e integración continua</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-ejecutarlo">6.1. Cómo ejecutarlo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">6.2. Arquitectura</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#secciones-y-controles">6.3. Secciones y controles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactividad">6.4. Interactividad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-de-diseno-visual">6.5. Decisiones de diseño visual</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pruebas-del-dashboard">6.6. Pruebas del dashboard</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#publicacion">6.7. Publicación</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Daniel Serrano Romero
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

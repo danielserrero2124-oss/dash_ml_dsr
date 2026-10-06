@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Corazón con señal de electrocardiograma">
+  <!-- Ilustración original del proyecto: corazón con trazo de electrocardiograma sobre fondo oscuro -->
+  <defs>
+    <!-- Degradado del fondo -->
+    <linearGradient id="fondo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d1f2b"/>
+      <stop offset="1" stop-color="#121218"/>
+    </linearGradient>
+    <!-- Degradado del corazón -->
+    <linearGradient id="corazon" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#ff7a5c"/>
+      <stop offset="0.55" stop-color="#e5484d"/>
+      <stop offset="1" stop-color="#a3243b"/>
+    </linearGradient>
+    <!-- Halo luminoso detrás del corazón -->
+    <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e5484d" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#e5484d" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Brillo suave para el trazo del electrocardiograma -->
+    <filter id="brillo" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="desenfoque"/>
+      <feMerge><feMergeNode in="desenfoque"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Cuadrícula tipo papel de electrocardiograma -->
+    <pattern id="rejilla" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Fondo con esquinas redondeadas y cuadrícula -->
+  <rect width="640" height="420" rx="22" fill="url(#fondo)"/>
+  <rect width="640" height="420" rx="22" fill="url(#rejilla)"/>
+
+  <!-- Halo y anillos de pulso -->
+  <circle cx="320" cy="205" r="190" fill="url(#halo)"/>
+  <circle cx="320" cy="205" r="150" fill="none" stroke="#e5484d" stroke-opacity="0.18" stroke-width="1.5"/>
+  <circle cx="320" cy="205" r="182" fill="none" stroke="#e5484d" stroke-opacity="0.09" stroke-width="1.5"/>
+
+  <!-- Corazón -->
+  <path d="M320 318 C 250 262, 196 222, 196 166 C 196 124, 228 96, 264 96 C 288 96, 308 108, 320 128 C 332 108, 352 96, 376 96 C 412 96, 444 124, 444 166 C 444 222, 390 262, 320 318 Z"
+        fill="url(#corazon)"/>
+  <!-- Reflejo de luz sobre el corazón -->
+  <path d="M232 150 C 236 126, 254 114, 272 114" fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Trazo de electrocardiograma que atraviesa la imagen -->
+  <path d="M24 214 H178 L196 196 L212 214 H244 L262 232 L286 128 L312 286 L334 188 L350 214 H392 L410 190 L430 214 H616"
+        fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#brillo)"/>
+
+  <!-- Punto que marca el último latido -->
+  <circle cx="616" cy="214" r="6" fill="#ffffff"/>
+  <circle cx="616" cy="214" r="13" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+</svg>

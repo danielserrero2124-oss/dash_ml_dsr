@@ -1,0 +1,736 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7. MLOps: API, Docker, Kubernetes e integración continua &#8212; Predicción de enfermedad cardíaca – Informe del desarrollo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/autor.css?v=483c0dd5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'informe/7_mlops';</script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="8. Conclusiones" href="8_conclusiones.html" />
+    <link rel="prev" title="6. El dashboard: arquitectura y diseño" href="6_dashboard.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logoUN.png" class="logo__image only-light" alt="Predicción de enfermedad cardíaca – Informe del desarrollo - Home"/>
+    <script>document.write(`<img src="../_static/logoUN.png" class="logo__image only-dark" alt="Predicción de enfermedad cardíaca – Informe del desarrollo - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><!-- Tarjeta del autor en la barra lateral izquierda (visible en todas las páginas del libro) -->
+<div class="tarjeta-autor">
+  <img src="../_static/foto_author_DSR_sidebar.png" alt="Daniel Serrano Romero" class="tarjeta-autor__foto">
+  <div class="tarjeta-autor__nombre">Daniel Serrano Romero</div>
+  <div class="tarjeta-autor__detalle">Maestría en Matemáticas</div>
+  <div class="tarjeta-autor__detalle">Machine Learning</div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Búsqueda</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Predicción de enfermedad cardíaca: informe del desarrollo
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1_contexto.html">1. Contexto del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/3_informe_eda.html">2. Sección EDA del dashboard: figuras e interpretación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/4_informe_modelos.html">3. Sección ML Models del dashboard: resultados e interpretación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/1_model_leakage_demo.html">4. Etapa 1 · Análisis exploratorio, preprocesamiento y detección de <em>data leakage</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/2_model_pipeline_cv.html">5. Etapa 2 · Modelado con validación segura, exportación del modelo y monitoreo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_dashboard.html">6. El dashboard: arquitectura y diseño</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. MLOps: API, Docker, Kubernetes e integración continua</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_conclusiones.html">8. Conclusiones</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/danielserrero2124-oss/dash_ml_dsr" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Repositorio de origen"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/informe/7_mlops.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="claro/oscuro" aria-label="claro/oscuro" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MLOps: API, Docker, Kubernetes e integración continua</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-0-estructura-del-proyecto">7.1. Etapa 0 · Estructura del proyecto</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-3-api-con-fastapi">7.2. Etapa 3 · API con FastAPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-3-contenedor-docker">7.3. Etapa 3 · Contenedor Docker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-4-kubernetes-local">7.4. Etapa 4 · Kubernetes local</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-5-integracion-continua">7.5. Etapa 5 · Integración continua</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-6-monitoreo">7.6. Etapa 6 · Monitoreo</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="mlops-api-docker-kubernetes-e-integracion-continua">
+<h1><span class="section-number">7. </span>MLOps: API, Docker, Kubernetes e integración continua<a class="headerlink" href="#mlops-api-docker-kubernetes-e-integracion-continua" title="Link to this heading">#</a></h1>
+<p>Este capítulo documenta las etapas 0, 3, 4 y 5 del proyecto, que no aparecen en el
+dashboard. Las salidas que se muestran son las obtenidas en el equipo de desarrollo
+(Windows 11, Docker Desktop 29.8 con su Kubernetes integrado, v1.36).</p>
+<section id="etapa-0-estructura-del-proyecto">
+<h2><span class="section-number">7.1. </span>Etapa 0 · Estructura del proyecto<a class="headerlink" href="#etapa-0-estructura-del-proyecto" title="Link to this heading">#</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>proyecto_heart_disease/
+├── app/                 API REST (api.py) y modelo entrenado (model.joblib)
+├── dashboard/           Dashboard interactivo (Dash + Plotly)
+├── docker/              Dockerfile y dependencias de producción
+├── k8s/                 Manifiestos de Kubernetes (deployment.yaml, service.yaml)
+├── notebooks/           Cuadernos ejecutados
+├── fuentes/             Código fuente de los cuadernos
+├── informe/             Capítulos de texto de este libro
+├── src/                 Funciones reutilizables (modelado.py)
+├── tests/               Pruebas automáticas de la API y del dashboard
+├── .github/workflows/   Integración continua (ci.yml)
+├── data/heart.csv       Dataset
+├── drift_report.html    Reporte de deriva de Evidently
+└── model.joblib         Copia del modelo (estructura pedida en el enunciado)
+</pre></div>
+</div>
+<p>Respecto a la estructura del enunciado se agregaron <code class="docutils literal notranslate"><span class="pre">src/</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/</span></code>, <code class="docutils literal notranslate"><span class="pre">fuentes/</span></code>, <code class="docutils literal notranslate"><span class="pre">data/</span></code>,
+<code class="docutils literal notranslate"><span class="pre">dashboard/</span></code> e <code class="docutils literal notranslate"><span class="pre">informe/</span></code>.</p>
+</section>
+<section id="etapa-3-api-con-fastapi">
+<h2><span class="section-number">7.2. </span>Etapa 3 · API con FastAPI<a class="headerlink" href="#etapa-3-api-con-fastapi" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">app/api.py</span></code> carga el <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> entrenado una sola vez al iniciar y expone dos rutas:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Ruta</p></th>
+<th class="head"><p>Método</p></th>
+<th class="head"><p>Función</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">/health</span></code></p></td>
+<td><p>GET</p></td>
+<td><p>Comprueba que el servicio está vivo e indica qué clasificador está cargado</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">/predict</span></code></p></td>
+<td><p>POST</p></td>
+<td><p>Recibe los 11 datos de un paciente y devuelve la probabilidad y la predicción</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Diferencia con el enunciado.</strong> El ejemplo recibe <code class="docutils literal notranslate"><span class="pre">features:</span> <span class="pre">list</span></code>. Aquí la entrada tiene
+campos con nombre y validación, porque el modelo necesita los nombres de columna para aplicar
+el preprocesamiento y porque así se rechazan datos inválidos antes de predecir:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Paciente</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">Age</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+    <span class="n">Sex</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"M"</span><span class="p">,</span> <span class="s2">"F"</span><span class="p">]</span>
+    <span class="n">ChestPainType</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"TA"</span><span class="p">,</span> <span class="s2">"ATA"</span><span class="p">,</span> <span class="s2">"NAP"</span><span class="p">,</span> <span class="s2">"ASY"</span><span class="p">]</span>
+    <span class="n">RestingBP</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+    <span class="n">Cholesterol</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">FastingBS</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">RestingECG</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"Normal"</span><span class="p">,</span> <span class="s2">"ST"</span><span class="p">,</span> <span class="s2">"LVH"</span><span class="p">]</span>
+    <span class="n">MaxHR</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+    <span class="n">ExerciseAngina</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"Y"</span><span class="p">,</span> <span class="s2">"N"</span><span class="p">]</span>
+    <span class="n">Oldpeak</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">ge</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ST_Slope</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"Up"</span><span class="p">,</span> <span class="s2">"Flat"</span><span class="p">,</span> <span class="s2">"Down"</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Petición y respuesta reales:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/predict<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"Age":54,"Sex":"M","ChestPainType":"ASY","RestingBP":140,"Cholesterol":239,"FastingBS":0,</span>
+<span class="s1">       "RestingECG":"Normal","MaxHR":120,"ExerciseAngina":"Y","Oldpeak":1.5,"ST_Slope":"Flat"}'</span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"heart_disease_probability"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.978289581291574</span><span class="p">,</span><span class="w"> </span><span class="nt">"prediction"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Una petición incompleta (por ejemplo, solo <code class="docutils literal notranslate"><span class="pre">{&quot;Age&quot;:</span> <span class="pre">54}</span></code>) recibe un error <strong>422</strong> con el
+detalle de los campos que faltan. FastAPI genera además documentación interactiva en <code class="docutils literal notranslate"><span class="pre">/docs</span></code>.</p>
+</section>
+<section id="etapa-3-contenedor-docker">
+<h2><span class="section-number">7.3. </span>Etapa 3 · Contenedor Docker<a class="headerlink" href="#etapa-3-contenedor-docker" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>heart-api<span class="w"> </span>-f<span class="w"> </span>docker/Dockerfile<span class="w"> </span>.
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>heart-api
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspecto</p></th>
+<th class="head"><p>Resultado</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Imagen</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">heart-api:latest</span></code>, 648 MB (base <code class="docutils literal notranslate"><span class="pre">python:3.10-slim</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Estado del contenedor</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">healthy</span></code> (comprobación periódica de <code class="docutils literal notranslate"><span class="pre">/health</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Usuario de ejecución</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">apiuser</span></code>, sin privilegios de administrador</p></td>
+</tr>
+<tr class="row-odd"><td><p>Predicción dentro del contenedor</p></td>
+<td><p>0,978 para el paciente de ejemplo, idéntica a la obtenida fuera de Docker</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Decisiones sobre el <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> del enunciado:</p>
+<ul class="simple">
+<li><p><strong>Versiones fijadas.</strong> El modelo se guardó con scikit-learn 1.3.0. Con <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> sin
+versión, la imagen instalaría una más reciente y el archivo podría no cargar o predecir
+distinto. <code class="docutils literal notranslate"><span class="pre">docker/requirements.txt</span></code> fija scikit-learn, numpy, pandas y joblib.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">pandas</span></code> añadido.</strong> La API construye un DataFrame con los nombres de las columnas.</p></li>
+<li><p><strong>Usuario sin privilegios y <code class="docutils literal notranslate"><span class="pre">HEALTHCHECK</span></code>.</strong> Buenas prácticas que no cambian el
+comportamiento de la API.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">.dockerignore</span></code>.</strong> Solo entran a la imagen <code class="docutils literal notranslate"><span class="pre">app/</span></code> y la lista de dependencias.</p></li>
+</ul>
+</section>
+<section id="etapa-4-kubernetes-local">
+<h2><span class="section-number">7.4. </span>Etapa 4 · Kubernetes local<a class="headerlink" href="#etapa-4-kubernetes-local" title="Link to this heading">#</a></h2>
+<p>Se usó el Kubernetes integrado en Docker Desktop en lugar de Minikube: es equivalente para
+un despliegue local y comparte las imágenes de Docker, así que no hace falta publicar la
+imagen en Docker Hub.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/deployment.yaml
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/service.yaml
+kubectl<span class="w"> </span>get<span class="w"> </span>deployment,pods,svc
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>NAME                          READY   UP-TO-DATE   AVAILABLE
+deployment.apps/heart-model   1/1     1            1
+
+NAME                               READY   STATUS    RESTARTS
+pod/heart-model-658f4f44bd-kkgpf   1/1     Running   0
+
+NAME            TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)
+heart-service   LoadBalancer   10.96.143.225   172.18.0.5    80:31955/TCP
+</pre></div>
+</div>
+<p>El servicio responde en el puerto 80 del equipo:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost/health
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ok"</span><span class="p">,</span><span class="w"> </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RandomForestClassifier"</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Diferencias con los manifiestos del enunciado:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cambio</p></th>
+<th class="head"><p>Motivo</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">image:</span> <span class="pre">heart-api:latest</span></code> con <code class="docutils literal notranslate"><span class="pre">imagePullPolicy:</span> <span class="pre">IfNotPresent</span></code></p></td>
+<td><p>Usa la imagen local; con Docker Hub se sustituye por <code class="docutils literal notranslate"><span class="pre">&lt;usuario&gt;/heart-api</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">readinessProbe</span></code> y <code class="docutils literal notranslate"><span class="pre">livenessProbe</span></code> sobre <code class="docutils literal notranslate"><span class="pre">/health</span></code></p></td>
+<td><p>El pod recibe tráfico solo cuando el modelo está cargado y se reinicia si deja de responder</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">resources</span></code> (CPU y memoria)</p></td>
+<td><p>Evita que un pod consuma todos los recursos del nodo</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El <code class="docutils literal notranslate"><span class="pre">Service</span></code> es de tipo <code class="docutils literal notranslate"><span class="pre">LoadBalancer</span></code>, como pide el enunciado: redirige el puerto 80 al
+puerto 8000 del contenedor y repartiría el tráfico si se aumentaran las réplicas.</p>
+</section>
+<section id="etapa-5-integracion-continua">
+<h2><span class="section-number">7.5. </span>Etapa 5 · Integración continua<a class="headerlink" href="#etapa-5-integracion-continua" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yml</span></code> se ejecuta en cada <em>push</em>: instala las dependencias, revisa el
+estilo con flake8 y ejecuta las pruebas con pytest sobre Python 3.10.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Paso</p></th>
+<th class="head"><p>Qué valida</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">flake8</span> <span class="pre">app/</span> <span class="pre">tests/</span> <span class="pre">src/</span> <span class="pre">dashboard/</span></code></p></td>
+<td><p>Sintaxis y estilo del código</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests/</span></code></p></td>
+<td><p>14 pruebas: 6 de la API y 8 del dashboard</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Pruebas de la API (<code class="docutils literal notranslate"><span class="pre">tests/test_api.py</span></code>):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Prueba</p></th>
+<th class="head"><p>Comprueba que…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">test_health</span></code></p></td>
+<td><p>el servicio responde y tiene un modelo cargado</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">test_predict_devuelve_probabilidad_valida</span></code></p></td>
+<td><p>la probabilidad está entre 0 y 1 y la predicción es coherente con el umbral</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">test_predict_ordena_bien_el_riesgo</span></code></p></td>
+<td><p>un perfil de alto riesgo recibe más probabilidad que uno de bajo riesgo</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">test_predict_acepta_colesterol_no_medido</span></code></p></td>
+<td><p>un colesterol igual a 0 se imputa y no rompe la predicción</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">test_predict_rechaza_categoria_invalida</span></code></p></td>
+<td><p>un valor no permitido devuelve error 422</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">test_predict_rechaza_campos_faltantes</span></code></p></td>
+<td><p>un campo ausente devuelve error 422</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>La ejecución en GitHub Actions terminó correctamente. Como la CI corre en Linux con
+Python 3.10 y los modelos se entrenaron en Windows con Python 3.9, su éxito confirma además
+que los modelos guardados se cargan igual en el entorno de producción.</p>
+<p><strong>Ajuste de estilo.</strong> El código lleva un comentario explicativo en cada línea, por lo que el
+límite de longitud de línea de flake8 se amplió a 240 caracteres (archivo <code class="docutils literal notranslate"><span class="pre">.flake8</span></code>).</p>
+</section>
+<section id="etapa-6-monitoreo">
+<h2><span class="section-number">7.6. </span>Etapa 6 · Monitoreo<a class="headerlink" href="#etapa-6-monitoreo" title="Link to this heading">#</a></h2>
+<p>El reporte de deriva con Evidently se genera y se interpreta en el capítulo 5. En resumen:
+entre train y test no hay deriva del dataset (1 de 11 variables, atribuible al azar), y en
+una población alterada a propósito se detectan exactamente las tres variables modificadas,
+con una caída del AUC de 0,930 a 0,882.</p>
+<p>En producción, el paso siguiente sería que la API registrara cada petición y que un proceso
+periódico comparase ese registro con los datos de entrenamiento usando el mismo reporte.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./informe"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="6_dashboard.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>El dashboard: arquitectura y diseño</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="8_conclusiones.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Conclusiones</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-0-estructura-del-proyecto">7.1. Etapa 0 · Estructura del proyecto</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-3-api-con-fastapi">7.2. Etapa 3 · API con FastAPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-3-contenedor-docker">7.3. Etapa 3 · Contenedor Docker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-4-kubernetes-local">7.4. Etapa 4 · Kubernetes local</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-5-integracion-continua">7.5. Etapa 5 · Integración continua</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#etapa-6-monitoreo">7.6. Etapa 6 · Monitoreo</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Daniel Serrano Romero
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

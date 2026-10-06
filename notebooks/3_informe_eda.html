@@ -1,0 +1,1095 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. Sección EDA del dashboard: figuras e interpretación &#8212; Predicción de enfermedad cardíaca – Informe del desarrollo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/autor.css?v=483c0dd5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/3_informe_eda';</script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../search.html" />
+    <link rel="next" title="3. Sección ML Models del dashboard: resultados e interpretación" href="4_informe_modelos.html" />
+    <link rel="prev" title="1. Contexto del problema" href="../informe/1_contexto.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logoUN.png" class="logo__image only-light" alt="Predicción de enfermedad cardíaca – Informe del desarrollo - Home"/>
+    <script>document.write(`<img src="../_static/logoUN.png" class="logo__image only-dark" alt="Predicción de enfermedad cardíaca – Informe del desarrollo - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><!-- Tarjeta del autor en la barra lateral izquierda (visible en todas las páginas del libro) -->
+<div class="tarjeta-autor">
+  <img src="../_static/foto_author_DSR_sidebar.png" alt="Daniel Serrano Romero" class="tarjeta-autor__foto">
+  <div class="tarjeta-autor__nombre">Daniel Serrano Romero</div>
+  <div class="tarjeta-autor__detalle">Maestría en Matemáticas</div>
+  <div class="tarjeta-autor__detalle">Machine Learning</div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Búsqueda</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Predicción de enfermedad cardíaca: informe del desarrollo
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../informe/1_contexto.html">1. Contexto del problema</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Sección EDA del dashboard: figuras e interpretación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_informe_modelos.html">3. Sección ML Models del dashboard: resultados e interpretación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_model_leakage_demo.html">4. Etapa 1 · Análisis exploratorio, preprocesamiento y detección de <em>data leakage</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_model_pipeline_cv.html">5. Etapa 2 · Modelado con validación segura, exportación del modelo y monitoreo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../informe/6_dashboard.html">6. El dashboard: arquitectura y diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../informe/7_mlops.html">7. MLOps: API, Docker, Kubernetes e integración continua</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../informe/8_conclusiones.html">8. Conclusiones</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/danielserrero2124-oss/dash_ml_dsr" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Repositorio de origen"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/3_informe_eda.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="claro/oscuro" aria-label="claro/oscuro" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Sección EDA del dashboard: figuras e interpretación</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indicadores-de-cabecera">2.1. Indicadores de cabecera</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-1-variable-objetivo">2.2. Figura 1 · Variable objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-2-distribucion-de-una-variable-numerica-por-clase">2.3. Figura 2 · Distribución de una variable numérica por clase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-3-variables-categoricas-frente-al-objetivo">2.4. Figura 3 · Variables categóricas frente al objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-4-relacion-entre-dos-variables-numericas">2.5. Figura 4 · Relación entre dos variables numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-5-correlacion-entre-variables-numericas">2.6. Figura 5 · Correlación entre variables numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detalle-que-no-aparece-en-el-dashboard-los-ceros-de-colesterol">2.7. Detalle que no aparece en el dashboard: los ceros de colesterol</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sintesis-del-analisis-exploratorio">2.8. Síntesis del análisis exploratorio</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="seccion-eda-del-dashboard-figuras-e-interpretacion">
+<h1><span class="section-number">2. </span>Sección EDA del dashboard: figuras e interpretación<a class="headerlink" href="#seccion-eda-del-dashboard-figuras-e-interpretacion" title="Link to this heading">#</a></h1>
+<p>Este capítulo reproduce, una por una, las figuras de la pestaña <strong>EDA</strong> del dashboard y
+explica qué muestra cada una. Las figuras se generan con las mismas funciones que usa el
+dashboard (<code class="docutils literal notranslate"><span class="pre">dashboard/figuras.py</span></code>), así que son interactivas: al pasar el cursor aparecen
+los valores.</p>
+<p>En el dashboard varias figuras dependen de un desplegable. Aquí se muestran las opciones más
+informativas y se resumen las demás en tablas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>  <span class="c1"># Acceso a la configuración del intérprete de Python</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">".."</span><span class="p">)</span>  <span class="c1"># Agrega la carpeta raíz del proyecto para importar los paquetes dashboard y src</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>  <span class="c1"># Manejo de tablas de datos</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display</span>  <span class="c1"># Permite incrustar HTML (las figuras interactivas) en el cuaderno</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dashboard</span><span class="w"> </span><span class="kn">import</span> <span class="n">figuras</span> <span class="k">as</span> <span class="n">fg</span>  <span class="c1"># Mismas funciones de figuras que usa el dashboard</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src</span><span class="w"> </span><span class="kn">import</span> <span class="n">modelado</span> <span class="k">as</span> <span class="n">mod</span>  <span class="c1"># Rutas y nombres de columnas del proyecto</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.width"</span><span class="p">,</span> <span class="mi">160</span><span class="p">)</span>  <span class="c1"># Ancho de impresión de las tablas</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">RUTA_DATOS</span><span class="p">)</span>  <span class="c1"># Carga el dataset completo (918 pacientes)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">mostrar</span><span class="p">(</span><span class="n">fig</span><span class="p">):</span>  <span class="c1"># Muestra una figura del dashboard dentro del informe</span>
+<span class="w">    </span><span class="sd">"""Aplica el fondo oscuro de las tarjetas del dashboard y la incrusta como HTML interactivo."""</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">paper_bgcolor</span><span class="o">=</span><span class="n">fg</span><span class="o">.</span><span class="n">SUPERFICIE</span><span class="p">,</span> <span class="n">plot_bgcolor</span><span class="o">=</span><span class="n">fg</span><span class="o">.</span><span class="n">SUPERFICIE</span><span class="p">)</span>  <span class="c1"># Fondo oscuro (en el dashboard lo aporta la tarjeta)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">include_plotlyjs</span><span class="o">=</span><span class="s2">"cdn"</span><span class="p">,</span> <span class="n">full_html</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>  <span class="c1"># Inserta la figura con la librería Plotly cargada desde internet</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> pacientes × </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> columnas"</span><span class="p">)</span>  <span class="c1"># Dimensión del dataset</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>918 pacientes × 12 columnas
+</pre></div>
+</div>
+</div>
+</div>
+<section id="indicadores-de-cabecera">
+<h2><span class="section-number">2.1. </span>Indicadores de cabecera<a class="headerlink" href="#indicadores-de-cabecera" title="Link to this heading">#</a></h2>
+<p>La pestaña abre con cinco indicadores que resumen la muestra.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">indicadores</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>  <span class="c1"># Mismos indicadores que muestra el dashboard</span>
+    <span class="s2">"Sanos (clase 0)"</span><span class="p">:</span> <span class="nb">int</span><span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="s2">"HeartDisease"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>  <span class="c1"># Pacientes sin enfermedad</span>
+    <span class="s2">"Con enfermedad (clase 1)"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"HeartDisease"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>  <span class="c1"># Pacientes con enfermedad</span>
+    <span class="s2">"Edad mediana (años)"</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"Age"</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span>  <span class="c1"># Edad central de la muestra</span>
+    <span class="s2">"Edad mínima – máxima"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'Age'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2"> – </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'Age'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>  <span class="c1"># Rango de edades</span>
+    <span class="s2">"Hombres (%)"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"Sex"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"M"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># Proporción de hombres</span>
+    <span class="s2">"Colesterol no medido (%)"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"Cholesterol"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># Proporción de ceros imposibles</span>
+<span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">"valor"</span><span class="p">)</span>  <span class="c1"># Nombre de la columna</span>
+<span class="n">indicadores</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>  <span class="c1"># Muestra la tabla</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Sanos (clase 0)</th>
+      <td>410</td>
+    </tr>
+    <tr>
+      <th>Con enfermedad (clase 1)</th>
+      <td>508</td>
+    </tr>
+    <tr>
+      <th>Edad mediana (años)</th>
+      <td>54.0</td>
+    </tr>
+    <tr>
+      <th>Edad mínima – máxima</th>
+      <td>28 – 77</td>
+    </tr>
+    <tr>
+      <th>Hombres (%)</th>
+      <td>79.0</td>
+    </tr>
+    <tr>
+      <th>Colesterol no medido (%)</th>
+      <td>18.7</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> La muestra es de adultos de mediana edad (mediana de 54 años) y está
+dominada por hombres (79 %), lo que limita la validez de cualquier conclusión para mujeres:
+solo hay 193. El 18,7 % de los pacientes no tiene medición de colesterol, un problema de
+calidad de datos que condiciona el preprocesamiento.</p>
+</section>
+<section id="figura-1-variable-objetivo">
+<h2><span class="section-number">2.2. </span>Figura 1 · Variable objetivo<a class="headerlink" href="#figura-1-variable-objetivo" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mostrar</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">fig_objetivo</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>  <span class="c1"># Barras con el número de pacientes por clase</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="47eb00e7-9cbe-49b9-85a2-bcf7e1441f2c" class="plotly-graph-div" style="height:320px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("47eb00e7-9cbe-49b9-85a2-bcf7e1441f2c")) {                    Plotly.newPlot(                        "47eb00e7-9cbe-49b9-85a2-bcf7e1441f2c",                        [{"hovertemplate":"%{x}\u003cbr\u003e%{y} pacientes\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"color":["#3987e5","#d95926"],"cornerradius":4},"text":["410 \u00b7 44,7 %","508 \u00b7 55,3 %"],"textfont":{"color":"#ffffff"},"textposition":"outside","width":0.5,"x":["Sano (0)","Enfermedad (1)"],"y":[410,508],"type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"yaxis":{"title":{"text":"Pacientes","font":{"color":"#c3c2b7"}},"range":[0,599.4399999999999],"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"font":{"family":"Segoe UI, system-ui, sans-serif","color":"#c3c2b7","size":13},"margin":{"l":56,"r":18,"t":18,"b":48},"legend":{"font":{"color":"#c3c2b7"},"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"left","x":0,"bgcolor":"rgba(0,0,0,0)"},"hoverlabel":{"font":{"color":"#ffffff","size":13},"bgcolor":"#222226","bordercolor":"#2e2e33"},"height":320,"paper_bgcolor":"#1a1a19","plot_bgcolor":"#1a1a19","showlegend":false,"bargap":0.25,"xaxis":{"title":{"font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"}},                        {"responsive": true}                    )                };                            </script>        </div></div></div>
+</div>
+<p><strong>Interpretación.</strong> Hay 508 pacientes con enfermedad (55,3 %) y 410 sanos (44,7 %). Las
+clases están casi balanceadas, así que:</p>
+<ul class="simple">
+<li><p>no hace falta sobremuestreo ni ponderación de clases;</p></li>
+<li><p>un clasificador trivial que siempre predijera «enfermedad» acertaría el 55,3 %, y ese es el
+mínimo que cualquier modelo debe superar;</p></li>
+<li><p>las particiones se hacen estratificadas para conservar esta proporción en train y test.</p></li>
+</ul>
+<p>La prevalencia es mucho mayor que en la población general porque los datos provienen de
+pacientes remitidos a estudio cardiológico. Las probabilidades del modelo no deben
+trasladarse sin recalibrar a un contexto de tamizaje poblacional.</p>
+</section>
+<section id="figura-2-distribucion-de-una-variable-numerica-por-clase">
+<h2><span class="section-number">2.3. </span>Figura 2 · Distribución de una variable numérica por clase<a class="headerlink" href="#figura-2-distribucion-de-una-variable-numerica-por-clase" title="Link to this heading">#</a></h2>
+<p>En el dashboard se elige la variable, el tipo de gráfico (histograma, violín o caja) y si
+se excluyen los ceros no medidos. Se muestran aquí las dos variables más discriminantes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mostrar</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">fig_numerica</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">"MaxHR"</span><span class="p">,</span> <span class="s2">"histograma"</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>  <span class="c1"># Frecuencia cardíaca máxima: histograma superpuesto por clase</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="380387be-dcf1-45b3-8909-7f1a782a588e" class="plotly-graph-div" style="height:380px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("380387be-dcf1-45b3-8909-7f1a782a588e")) {                    Plotly.newPlot(                        "380387be-dcf1-45b3-8909-7f1a782a588e",                        [{"hovertemplate":"%{x}\u003cbr\u003e%{y} pacientes\u003cextra\u003eSano (0)\u003c\u002fextra\u003e","marker":{"color":"#3987e5","line":{"color":"#1a1a19","width":1}},"name":"Sano (0)","nbinsx":32,"opacity":0.72,"x":[172,98,122,170,170,142,120,142,145,137,150,165,142,142,164,138,178,112,118,127,145,114,154,155,142,148,130,130,168,170,120,168,170,184,122,150,140,170,134,174,175,144,145,130,144,184,170,135,115,116,150,138,160,154,165,142,110,160,140,148,180,138,160,140,144,100,140,110,168,135,106,124,125,150,135,185,139,140,150,110,190,175,140,152,130,120,175,146,155,132,155,176,160,120,100,150,140,160,130,130,174,150,140,118,100,160,160,188,162,172,150,150,90,150,140,130,110,110,120,116,160,110,180,116,132,136,98,150,150,146,150,100,140,180,185,128,164,170,137,150,170,125,185,137,140,170,184,158,167,129,142,140,160,155,118,137,115,152,130,150,172,120,155,165,138,175,150,145,140,165,134,180,100,126,155,135,160,160,170,120,140,132,156,180,138,135,148,150,120,154,141,138,179,114,97,127,99,120,140,140,86,120,118,116,133,131,111,107,160,130,161,130,139,180,135,69,138,80,126,153,160,128,150,144,135,100,120,139,135,86,160,112,137,141,154,128,126,165,133,110,136,96,151,96,137,135,160,105,121,140,161,111,180,159,125,144,178,180,181,143,159,139,152,157,130,138,170,150,186,163,179,156,165,184,157,179,175,168,96,173,169,171,150,186,149,163,143,116,142,148,179,173,178,168,126,178,140,145,163,164,151,133,162,175,163,143,138,153,170,162,162,114,151,152,163,169,158,178,165,160,172,192,168,182,125,172,179,158,167,122,149,172,170,162,155,161,154,159,152,152,131,115,174,163,194,122,173,162,147,157,160,156,175,161,122,158,151,151,178,160,154,187,166,165,202,172,172,154,147,170,174,182,132,162,190,185,146,160,156,172,182,143,142,148,188,123,157,162,137,171,172,171,162,173,153,148,115,169,155,152,152,131,179,174,144,163,169,166,182,173],"type":"histogram"},{"hovertemplate":"%{x}\u003cbr\u003e%{y} pacientes\u003cextra\u003eEnfermedad (1)\u003c\u002fextra\u003e","marker":{"color":"#d95926","line":{"color":"#1a1a19","width":1}},"name":"Enfermedad (1)","nbinsx":32,"opacity":0.72,"x":[156,108,130,99,140,166,125,160,150,130,122,130,87,100,120,170,121,98,153,140,96,125,82,145,150,128,130,170,115,125,94,112,155,92,140,115,130,152,124,92,150,170,130,180,170,110,150,122,124,175,118,130,94,125,158,150,125,150,150,100,119,96,175,140,134,135,105,120,124,92,138,120,116,140,140,110,140,98,150,112,150,150,134,118,136,99,102,142,143,103,150,150,130,120,135,115,96,115,125,145,110,91,130,150,126,122,93,127,110,139,131,92,149,149,120,123,126,127,155,138,182,110,176,154,123,148,121,77,136,175,109,166,128,133,128,119,82,130,143,82,144,170,134,154,149,145,122,114,113,120,104,130,115,128,104,125,120,140,100,100,92,125,113,95,128,115,72,124,99,148,140,117,120,120,86,63,108,98,115,105,121,118,122,157,156,99,120,145,156,155,105,99,135,83,145,60,92,115,120,98,150,143,105,122,70,110,163,67,128,120,130,100,72,94,122,78,150,103,98,110,90,112,140,149,105,141,157,117,120,120,148,84,125,124,106,111,180,129,125,140,120,124,117,110,105,155,110,122,118,123,80,165,86,118,84,117,128,125,97,106,130,140,122,120,108,148,123,110,118,125,106,112,128,144,140,102,108,145,127,110,140,148,130,130,140,138,140,112,131,112,150,110,88,150,120,132,120,110,121,135,120,117,113,127,109,128,115,102,140,135,122,119,130,112,122,120,105,129,162,100,140,73,108,116,118,122,124,102,126,160,115,115,105,110,119,109,135,130,112,126,120,110,119,110,130,159,84,116,120,122,122,94,150,130,113,140,100,127,98,123,98,112,108,128,138,126,154,100,93,109,141,142,142,170,154,145,120,155,129,165,150,140,126,150,138,125,181,134,126,177,120,114,125,125,143,103,142,112,152,152,140,147,105,130,111,128,169,109,108,168,118,156,71,124,147,166,157,162,117,161,144,133,103,139,116,88,99,160,169,132,96,144,132,163,195,95,160,114,173,111,165,182,154,130,174,146,125,106,122,147,163,150,158,105,112,125,156,162,171,141,173,145,131,159,131,126,127,132,97,136,146,140,161,145,120,150,160,144,158,155,142,113,153,132,158,132,160,168,108,143,156,162,164,143,130,161,140,146,150,144,144,136,90,123,132,141,115,174],"type":"histogram"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"barmode":"overlay","xaxis":{"title":{"text":"Frecuencia card\u00edaca m\u00e1xima","font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"yaxis":{"title":{"text":"Pacientes","font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"font":{"family":"Segoe UI, system-ui, sans-serif","color":"#c3c2b7","size":13},"margin":{"l":56,"r":18,"t":18,"b":48},"legend":{"font":{"color":"#c3c2b7"},"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"left","x":0,"bgcolor":"rgba(0,0,0,0)"},"hoverlabel":{"font":{"color":"#ffffff","size":13},"bgcolor":"#222226","bordercolor":"#2e2e33"},"height":380,"paper_bgcolor":"#1a1a19","plot_bgcolor":"#1a1a19","showlegend":true,"bargap":0.25},                        {"responsive": true}                    )                };                            </script>        </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mostrar</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">fig_numerica</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">"Oldpeak"</span><span class="p">,</span> <span class="s2">"violin"</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>  <span class="c1"># Oldpeak: diagrama de violín por clase</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="6184004e-b967-42d4-aa12-93ba88709b68" class="plotly-graph-div" style="height:380px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("6184004e-b967-42d4-aa12-93ba88709b68")) {                    Plotly.newPlot(                        "6184004e-b967-42d4-aa12-93ba88709b68",                        [{"box":{"visible":true},"line":{"width":2},"marker":{"color":"#3987e5"},"meanline":{"visible":true},"name":"Sano (0)","opacity":0.85,"y":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.5,0.0,0.0,1.0,0.0,0.0,0.0,3.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,1.5,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,0.5,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,2.0,0.0,1.5,0.0,1.0,0.0,2.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,2.0,0.0,1.0,0.0,0.0,0.0,0.5,0.0,0.0,1.0,0.0,0.0,2.0,0.0,0.0,0.0,0.0,0.0,0.8,0.0,0.0,2.0,0.0,0.0,0.0,0.0,0.0,2.0,0.0,0.0,1.0,0.0,0.2,0.7,1.0,2.0,-0.1,-1.1,1.6,0.0,0.0,1.3,-0.5,1.5,0.0,0.0,1.5,0.0,0.2,2.0,1.5,0.0,0.0,0.0,0.1,2.0,0.1,0.1,0.4,0.3,1.0,0.2,0.0,0.3,-0.1,3.0,0.5,0.0,0.1,0.3,0.0,0.0,0.2,0.2,0.0,0.3,2.0,0.2,0.1,2.0,1.5,0.3,1.0,0.2,0.0,0.2,1.0,0.0,1.0,0.2,0.3,1.6,0.2,0.2,0.4,0.5,0.0,0.0,0.0,1.6,1.8,1.4,0.2,1.2,0.1,0.0,0.2,0.0,0.6,0.0,2.3,0.0,0.0,0.0,0.0,0.4,0.0,0.0,0.0,0.8,0.0,0.6,0.0,0.0,0.2,0.0,0.9,2.3,0.0,0.3,0.6,0.0,1.1,0.3,3.0,0.0,0.0,0.8,2.0,1.5,0.8,0.0,4.2,0.0,0.0,0.4,0.2,1.1,0.6,0.0,1.2,0.0,0.0,0.0,0.0,0.0,2.6,0.8,0.5,0.0,0.1,0.8,0.0,1.6,1.4,0.0,0.7,0.0,0.0,1.4,0.0,0.0,1.6,0.0,2.0,0.5,0.0,0.0,1.9,0.0,0.0,0.0,0.0,1.2,0.2,0.1,1.5,0.0,0.0,0.8,0.6,0.0,1.9,0.1,1.2,1.2,0.0,0.0,1.4,1.0,1.6,1.8,1.0,1.2,0.0,0.6,3.5,2.4,0.2,0.0,1.4,0.0,0.0,0.4,0.0,1.6,1.4,0.0,1.0,0.0,0.0,1.8,0.0,0.0,0.2,0.0,0.4,1.5,0.8,0.0,0.6,1.6,0.4,1.0,1.5,0.0,0.6,0.5,0.0,1.3,0.4,0.0,0.0,0.6,0.0,0.0,0.6,0.0,0.0,0.4,0.0,0.0,1.2,0.0,0.0],"type":"violin"},{"box":{"visible":true},"line":{"width":2},"marker":{"color":"#d95926"},"meanline":{"visible":true},"name":"Enfermedad (1)","opacity":0.85,"y":[1.0,1.5,1.5,2.0,1.0,0.0,1.0,3.0,3.0,0.0,2.0,2.0,1.5,0.0,1.0,0.0,2.0,2.0,1.5,0.0,1.0,1.0,4.0,1.0,0.0,1.5,0.0,0.0,0.0,1.0,1.0,2.0,0.0,1.5,2.0,1.0,2.0,1.0,0.0,3.0,1.0,0.0,1.5,0.0,0.0,1.0,0.0,2.0,1.5,0.0,0.0,2.0,2.5,2.5,3.0,1.0,1.0,3.0,1.0,2.0,0.0,0.0,2.0,5.0,2.0,2.0,1.5,2.0,2.0,0.0,1.0,1.5,0.0,0.0,0.0,0.0,0.0,1.5,0.0,0.0,1.0,0.0,2.5,3.0,0.0,2.0,3.0,2.0,2.0,1.0,1.5,2.0,1.0,1.0,0.0,2.0,2.0,0.0,0.0,1.0,1.0,1.0,3.0,2.0,1.5,2.0,0.0,0.7,1.5,0.7,1.4,0.0,2.1,0.4,1.5,1.7,2.2,1.5,0.1,0.5,0.7,0.1,1.6,0.2,1.3,0.3,1.8,2.5,1.8,2.6,-0.9,2.8,2.5,-2.6,-1.5,0.9,0.8,1.1,2.4,-1.0,0.0,-0.7,-0.8,3.7,2.0,1.1,1.5,1.3,1.4,0.0,0.0,0.0,0.0,0.0,1.6,1.0,0.0,0.5,-1.0,1.0,0.3,0.0,1.5,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,2.0,0.0,2.0,2.0,0.5,2.0,0.0,1.0,0.0,0.0,1.0,1.2,2.0,0.0,0.5,0.5,2.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.7,2.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.7,2.0,0.0,1.2,0.0,-0.5,0.0,0.0,2.0,1.5,1.0,-2.0,3.0,0.0,3.0,1.5,2.5,0.0,2.0,0.5,1.0,0.5,1.0,1.0,2.5,2.0,1.0,2.0,0.0,3.0,1.0,1.2,0.5,1.5,1.6,1.4,2.0,1.0,1.5,2.0,1.0,1.5,1.2,0.0,0.0,1.5,1.9,0.0,1.3,2.0,2.5,1.6,0.0,3.0,1.5,1.7,0.0,2.0,2.0,2.5,2.0,2.5,2.5,1.5,1.1,1.2,2.0,3.0,1.0,0.0,3.0,1.7,2.5,1.0,3.0,0.0,1.0,4.0,2.0,2.0,3.0,1.2,3.0,1.5,0.0,2.0,1.3,0.5,0.0,1.5,1.0,1.0,4.0,1.0,1.0,1.7,1.5,1.4,1.1,1.8,0.0,2.0,2.5,1.0,1.2,4.0,2.0,1.2,3.5,1.5,3.0,0.0,1.5,1.5,2.0,1.8,1.8,0.0,1.8,1.4,4.0,1.1,2.0,1.7,0.0,1.5,2.5,2.0,1.5,0.5,1.5,1.5,1.2,3.0,1.9,3.0,1.8,1.0,1.5,0.0,1.5,0.8,2.0,2.0,0.0,2.0,0.0,1.0,0.5,0.0,1.7,1.5,1.3,0.0,1.5,3.0,1.5,0.0,0.0,0.0,0.0,0.0,2.4,0.3,0.6,1.2,1.2,4.0,2.6,1.8,3.1,2.6,2.5,0.4,3.4,0.9,0.0,1.9,0.0,0.0,2.2,0.8,0.0,0.0,1.0,1.8,3.6,0.0,1.4,1.2,0.6,0.0,0.0,3.6,0.0,2.0,1.6,0.8,2.6,0.0,2.2,0.0,1.0,1.0,0.1,1.0,1.0,1.4,0.5,2.6,0.0,3.4,0.0,0.8,4.0,1.6,2.0,3.2,1.2,1.8,1.4,1.8,0.1,2.2,1.2,2.0,0.6,0.0,2.0,0.0,2.0,3.2,5.6,1.0,3.8,1.4,3.0,1.4,2.0,0.9,1.9,4.2,3.6,0.2,1.9,0.0,2.1,2.9,2.6,0.0,0.0,0.0,2.8,1.6,0.8,1.8,0.2,2.2,2.8,2.8,1.8,1.2,3.0,1.0,1.2,0.0,6.2,2.5,1.6,3.6,1.4,0.6,3.0,2.8,1.4,0.0,1.2,0.0,2.4,1.8,1.0,1.5,0.1,1.0,0.8,0.0,3.0,2.0,0.0,4.4,2.8,0.8,2.8,4.0,0.0,1.0,0.2,1.2,3.4,1.2,0.0],"type":"violin"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"yaxis":{"title":{"text":"Oldpeak (depresi\u00f3n ST)","font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"font":{"family":"Segoe UI, system-ui, sans-serif","color":"#c3c2b7","size":13},"margin":{"l":56,"r":18,"t":18,"b":48},"legend":{"font":{"color":"#c3c2b7"},"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"left","x":0,"bgcolor":"rgba(0,0,0,0)"},"hoverlabel":{"font":{"color":"#ffffff","size":13},"bgcolor":"#222226","bordercolor":"#2e2e33"},"height":380,"paper_bgcolor":"#1a1a19","plot_bgcolor":"#1a1a19","showlegend":true,"bargap":0.25,"xaxis":{"title":{"font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"}},                        {"responsive": true}                    )                };                            </script>        </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">medianas</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"HeartDisease"</span><span class="p">)[[</span><span class="s2">"Age"</span><span class="p">,</span> <span class="s2">"RestingBP"</span><span class="p">,</span> <span class="s2">"Cholesterol"</span><span class="p">,</span> <span class="s2">"MaxHR"</span><span class="p">,</span> <span class="s2">"Oldpeak"</span><span class="p">]]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># Mediana de cada variable por clase</span>
+<span class="n">medianas</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Sano (0)"</span><span class="p">,</span> <span class="s2">"Enfermedad (1)"</span><span class="p">]</span>  <span class="c1"># Nombres de las columnas</span>
+<span class="n">medianas</span><span class="p">[</span><span class="s2">"Diferencia"</span><span class="p">]</span> <span class="o">=</span> <span class="n">medianas</span><span class="p">[</span><span class="s2">"Enfermedad (1)"</span><span class="p">]</span> <span class="o">-</span> <span class="n">medianas</span><span class="p">[</span><span class="s2">"Sano (0)"</span><span class="p">]</span>  <span class="c1"># Diferencia entre clases</span>
+<span class="n">medianas</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"Cholesterol (sin ceros)"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">"Cholesterol"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"HeartDisease"</span><span class="p">)[</span><span class="s2">"Cholesterol"</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">())</span> <span class="o">+</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>  <span class="c1"># Colesterol excluyendo los no medidos</span>
+<span class="n">medianas</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"Cholesterol (sin ceros)"</span><span class="p">,</span> <span class="s2">"Diferencia"</span><span class="p">]</span> <span class="o">=</span> <span class="n">medianas</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"Cholesterol (sin ceros)"</span><span class="p">,</span> <span class="s2">"Enfermedad (1)"</span><span class="p">]</span> <span class="o">-</span> <span class="n">medianas</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">"Cholesterol (sin ceros)"</span><span class="p">,</span> <span class="s2">"Sano (0)"</span><span class="p">]</span>  <span class="c1"># Su diferencia</span>
+<span class="n">medianas</span>  <span class="c1"># Muestra la tabla de medianas</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Sano (0)</th>
+      <th>Enfermedad (1)</th>
+      <th>Diferencia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Age</th>
+      <td>51.0</td>
+      <td>57.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>RestingBP</th>
+      <td>130.0</td>
+      <td>132.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>Cholesterol</th>
+      <td>227.0</td>
+      <td>217.0</td>
+      <td>-10.0</td>
+    </tr>
+    <tr>
+      <th>MaxHR</th>
+      <td>150.0</td>
+      <td>126.0</td>
+      <td>-24.0</td>
+    </tr>
+    <tr>
+      <th>Oldpeak</th>
+      <td>0.0</td>
+      <td>1.2</td>
+      <td>1.2</td>
+    </tr>
+    <tr>
+      <th>Cholesterol (sin ceros)</th>
+      <td>231.5</td>
+      <td>246.0</td>
+      <td>14.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong></p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">MaxHR</span></code> (frecuencia cardíaca máxima):</strong> es la numérica que mejor separa las clases. Los
+enfermos alcanzan una mediana de 126 latidos por minuto frente a 150 en los sanos: un
+corazón enfermo tolera peor el esfuerzo. Las distribuciones se solapan entre 110 y 160, de
+modo que la variable ayuda pero no decide sola.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Oldpeak</span></code>:</strong> la mitad de los sanos tiene exactamente 0 (sin depresión del segmento ST),
+mientras que la mediana de los enfermos es 1,2. El violín muestra la masa de sanos
+concentrada en cero y una cola larga hacia arriba en los enfermos.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Age</span></code>:</strong> los enfermos son mayores (57 frente a 51 años de mediana).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">RestingBP</span></code>:</strong> casi no distingue (132 frente a 130 mm Hg).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Cholesterol</span></code>:</strong> con todos los datos parece más bajo en los enfermos (217 frente a 227),
+pero es un efecto de los ceros. Al excluirlos, los enfermos tienen colesterol algo mayor
+(246 frente a 231,5). Por eso el dashboard excluye los ceros por defecto en este gráfico.</p></li>
+</ul>
+</section>
+<section id="figura-3-variables-categoricas-frente-al-objetivo">
+<h2><span class="section-number">2.4. </span>Figura 3 · Variables categóricas frente al objetivo<a class="headerlink" href="#figura-3-variables-categoricas-frente-al-objetivo" title="Link to this heading">#</a></h2>
+<p>El dashboard ofrece dos medidas: la <strong>tasa de enfermedad</strong> por categoría (con la tasa global
+como referencia) y el <strong>conteo</strong> por clase.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mostrar</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">fig_categorica</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">"ST_Slope"</span><span class="p">,</span> <span class="s2">"tasa"</span><span class="p">))</span>  <span class="c1"># Pendiente del segmento ST: proporción de enfermos por categoría</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="dc403c90-7b2d-4155-8bf9-ff80477e3f47" class="plotly-graph-div" style="height:380px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("dc403c90-7b2d-4155-8bf9-ff80477e3f47")) {                    Plotly.newPlot(                        "dc403c90-7b2d-4155-8bf9-ff80477e3f47",                        [{"customdata":[395,63,460],"hovertemplate":"%{y}\u003cbr\u003e%{x:.1%} con enfermedad\u003cbr\u003e%{customdata} pacientes\u003cextra\u003e\u003c\u002fextra\u003e","marker":{"color":"#d95926","cornerradius":4},"orientation":"h","text":["20 %","78 %","83 %"],"textfont":{"color":"#ffffff"},"textposition":"outside","width":0.55,"x":[0.19746835443037974,0.7777777777777778,0.8282608695652174],"y":["Up","Down","Flat"],"type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"shapes":[{"line":{"color":"#c3c2b7","dash":"dash","width":1.5},"type":"line","x0":0.5533769063180828,"x1":0.5533769063180828,"xref":"x","y0":0,"y1":1,"yref":"y domain"}],"annotations":[{"font":{"color":"#c3c2b7"},"showarrow":false,"text":"Tasa global 55 %","x":0.5533769063180828,"xanchor":"center","xref":"x","y":1,"yanchor":"bottom","yref":"y domain"}],"xaxis":{"title":{"text":"Proporci\u00f3n de pacientes con enfermedad","font":{"color":"#c3c2b7"}},"tickformat":".0%","range":[0,1.08],"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"yaxis":{"title":{"text":"Pendiente del segmento ST","font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"font":{"family":"Segoe UI, system-ui, sans-serif","color":"#c3c2b7","size":13},"margin":{"l":56,"r":18,"t":18,"b":48},"legend":{"font":{"color":"#c3c2b7"},"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"left","x":0,"bgcolor":"rgba(0,0,0,0)"},"hoverlabel":{"font":{"color":"#ffffff","size":13},"bgcolor":"#222226","bordercolor":"#2e2e33"},"height":380,"paper_bgcolor":"#1a1a19","plot_bgcolor":"#1a1a19","showlegend":false,"bargap":0.25},                        {"responsive": true}                    )                };                            </script>        </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mostrar</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">fig_categorica</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">"ChestPainType"</span><span class="p">,</span> <span class="s2">"conteo"</span><span class="p">))</span>  <span class="c1"># Tipo de dolor torácico: pacientes por categoría y clase</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="d18cdec5-a327-4c5e-bbc9-8028e13aad2a" class="plotly-graph-div" style="height:380px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("d18cdec5-a327-4c5e-bbc9-8028e13aad2a")) {                    Plotly.newPlot(                        "d18cdec5-a327-4c5e-bbc9-8028e13aad2a",                        [{"hovertemplate":"%{x}\u003cbr\u003e%{y} pacientes\u003cextra\u003eSano (0)\u003c\u002fextra\u003e","marker":{"color":"#3987e5","cornerradius":4,"line":{"color":"#1a1a19","width":2}},"name":"Sano (0)","x":["ASY","ATA","NAP","TA"],"y":[104,149,131,26],"type":"bar"},{"hovertemplate":"%{x}\u003cbr\u003e%{y} pacientes\u003cextra\u003eEnfermedad (1)\u003c\u002fextra\u003e","marker":{"color":"#d95926","cornerradius":4,"line":{"color":"#1a1a19","width":2}},"name":"Enfermedad (1)","x":["ASY","ATA","NAP","TA"],"y":[392,24,72,20],"type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"barmode":"group","xaxis":{"title":{"text":"Tipo de dolor tor\u00e1cico","font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"yaxis":{"title":{"text":"Pacientes","font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"font":{"family":"Segoe UI, system-ui, sans-serif","color":"#c3c2b7","size":13},"margin":{"l":56,"r":18,"t":18,"b":48},"legend":{"font":{"color":"#c3c2b7"},"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"left","x":0,"bgcolor":"rgba(0,0,0,0)"},"hoverlabel":{"font":{"color":"#ffffff","size":13},"bgcolor":"#222226","bordercolor":"#2e2e33"},"height":380,"paper_bgcolor":"#1a1a19","plot_bgcolor":"#1a1a19","showlegend":true,"bargap":0.25},                        {"responsive": true}                    )                };                            </script>        </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filas</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Acumulador de filas de la tabla resumen</span>
+<span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"Sex"</span><span class="p">,</span> <span class="s2">"ChestPainType"</span><span class="p">,</span> <span class="s2">"FastingBS"</span><span class="p">,</span> <span class="s2">"RestingECG"</span><span class="p">,</span> <span class="s2">"ExerciseAngina"</span><span class="p">,</span> <span class="s2">"ST_Slope"</span><span class="p">]:</span>  <span class="c1"># Recorre las seis variables del desplegable</span>
+    <span class="n">resumen</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">variable</span><span class="p">)[</span><span class="s2">"HeartDisease"</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">"size"</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">])</span>  <span class="c1"># Tamaño y tasa de enfermedad de cada categoría</span>
+    <span class="k">for</span> <span class="n">categoria</span><span class="p">,</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">resumen</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>  <span class="c1"># Recorre las categorías</span>
+        <span class="n">filas</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"variable"</span><span class="p">:</span> <span class="n">variable</span><span class="p">,</span> <span class="s2">"categoría"</span><span class="p">:</span> <span class="n">categoria</span><span class="p">,</span> <span class="s2">"pacientes"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">fila</span><span class="p">[</span><span class="s2">"size"</span><span class="p">]),</span> <span class="s2">"tasa de enfermedad (%)"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">fila</span><span class="p">[</span><span class="s2">"mean"</span><span class="p">],</span> <span class="mi">1</span><span class="p">)})</span>  <span class="c1"># Agrega la fila</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filas</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"categoría"</span><span class="p">])</span>  <span class="c1"># Tabla con todas las categorías</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>pacientes</th>
+      <th>tasa de enfermedad (%)</th>
+    </tr>
+    <tr>
+      <th>variable</th>
+      <th>categoría</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">Sex</th>
+      <th>F</th>
+      <td>193</td>
+      <td>25.9</td>
+    </tr>
+    <tr>
+      <th>M</th>
+      <td>725</td>
+      <td>63.2</td>
+    </tr>
+    <tr>
+      <th rowspan="4" valign="top">ChestPainType</th>
+      <th>ASY</th>
+      <td>496</td>
+      <td>79.0</td>
+    </tr>
+    <tr>
+      <th>ATA</th>
+      <td>173</td>
+      <td>13.9</td>
+    </tr>
+    <tr>
+      <th>NAP</th>
+      <td>203</td>
+      <td>35.5</td>
+    </tr>
+    <tr>
+      <th>TA</th>
+      <td>46</td>
+      <td>43.5</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">FastingBS</th>
+      <th>0</th>
+      <td>704</td>
+      <td>48.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>214</td>
+      <td>79.4</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">RestingECG</th>
+      <th>LVH</th>
+      <td>188</td>
+      <td>56.4</td>
+    </tr>
+    <tr>
+      <th>Normal</th>
+      <td>552</td>
+      <td>51.6</td>
+    </tr>
+    <tr>
+      <th>ST</th>
+      <td>178</td>
+      <td>65.7</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">ExerciseAngina</th>
+      <th>N</th>
+      <td>547</td>
+      <td>35.1</td>
+    </tr>
+    <tr>
+      <th>Y</th>
+      <td>371</td>
+      <td>85.2</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">ST_Slope</th>
+      <th>Down</th>
+      <td>63</td>
+      <td>77.8</td>
+    </tr>
+    <tr>
+      <th>Flat</th>
+      <td>460</td>
+      <td>82.8</td>
+    </tr>
+    <tr>
+      <th>Up</th>
+      <td>395</td>
+      <td>19.7</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong></p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ST_Slope</span></code> (pendiente del segmento ST):</strong> es la variable más informativa del dataset. Con
+pendiente plana (<code class="docutils literal notranslate"><span class="pre">Flat</span></code>) el 82,8 % tiene enfermedad y con pendiente descendente (<code class="docutils literal notranslate"><span class="pre">Down</span></code>)
+el 77,8 %; con pendiente ascendente (<code class="docutils literal notranslate"><span class="pre">Up</span></code>) solo el 19,7 %. Una pendiente plana o
+descendente durante el esfuerzo es un signo clásico de isquemia.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ChestPainType</span></code>:</strong> el resultado es contraintuitivo. Los pacientes <strong>asintomáticos</strong>
+(<code class="docutils literal notranslate"><span class="pre">ASY</span></code>) son los de mayor riesgo (79,0 %) y además el grupo más numeroso (496), mientras que
+la angina atípica (<code class="docutils literal notranslate"><span class="pre">ATA</span></code>) tiene la tasa más baja (13,9 %). En esta muestra, llegar a
+estudio sin dolor típico se asocia con enfermedad ya establecida.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ExerciseAngina</span></code>:</strong> con angina inducida por ejercicio la tasa sube a 85,2 %, frente a
+35,1 % sin ella.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">FastingBS</span></code>:</strong> con glucosa en ayunas elevada la tasa es 79,4 % frente a 48,0 %.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Sex</span></code>:</strong> 63,2 % en hombres frente a 25,9 % en mujeres.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">RestingECG</span></code>:</strong> es la categórica menos discriminante (entre 51,6 % y 65,7 %).</p></li>
+</ul>
+<p>La línea punteada de la tasa global (55 %) permite ver de inmediato qué categorías están
+por encima o por debajo del riesgo promedio.</p>
+</section>
+<section id="figura-4-relacion-entre-dos-variables-numericas">
+<h2><span class="section-number">2.5. </span>Figura 4 · Relación entre dos variables numéricas<a class="headerlink" href="#figura-4-relacion-entre-dos-variables-numericas" title="Link to this heading">#</a></h2>
+<p>Los dos ejes se eligen con desplegables. La combinación por defecto es edad frente a
+frecuencia cardíaca máxima.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mostrar</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">fig_dispersion</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">"Age"</span><span class="p">,</span> <span class="s2">"MaxHR"</span><span class="p">))</span>  <span class="c1"># Diagrama de dispersión coloreado por clase</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="90e06238-28c3-4571-8ff9-2a3d3dacdd1a" class="plotly-graph-div" style="height:400px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("90e06238-28c3-4571-8ff9-2a3d3dacdd1a")) {                    Plotly.newPlot(                        "90e06238-28c3-4571-8ff9-2a3d3dacdd1a",                        [{"hovertemplate":"Age: %{x}\u003cbr\u003eMaxHR: %{y}\u003cextra\u003eSano (0)\u003c\u002fextra\u003e","marker":{"color":"#3987e5","line":{"color":"#1a1a19","width":1.5},"opacity":0.8,"size":9},"mode":"markers","name":"Sano (0)","x":[40,37,54,39,45,54,48,37,39,42,54,43,43,44,49,40,36,53,52,53,51,56,43,32,41,48,48,54,35,52,59,37,50,36,45,41,52,51,54,49,43,45,50,37,45,32,44,44,44,46,35,52,55,54,52,53,55,49,39,52,39,43,39,56,41,51,57,48,34,50,39,59,47,38,49,35,52,46,58,54,34,48,54,42,38,61,43,39,53,39,42,43,50,39,48,40,55,41,49,54,47,42,52,48,58,58,29,40,53,49,59,37,46,51,46,54,58,50,46,50,48,45,41,62,49,42,57,47,46,42,31,56,50,35,28,56,56,30,54,55,29,48,33,55,53,41,37,37,40,38,41,54,39,55,43,54,61,62,53,55,36,51,55,46,54,54,34,47,45,32,55,45,59,57,54,60,51,55,42,51,59,53,48,36,48,47,53,55,53,65,53,45,38,72,56,44,66,66,60,56,62,63,60,74,60,59,41,51,42,63,56,62,51,55,65,58,51,40,60,35,63,64,55,45,61,57,61,48,68,62,53,75,54,54,59,41,69,37,63,58,55,57,68,51,62,58,67,64,74,65,59,53,44,57,71,64,40,48,43,47,54,48,46,51,71,66,37,42,48,62,44,46,58,52,65,63,45,41,60,57,44,60,63,51,44,57,70,76,67,45,39,42,56,41,57,42,62,59,41,59,66,64,50,44,49,51,45,41,54,42,49,66,65,54,54,52,52,42,54,46,67,34,57,59,51,41,41,50,54,64,51,46,45,56,55,43,64,50,53,45,69,68,34,50,42,42,53,43,52,62,54,54,48,55,58,54,69,68,52,60,58,37,51,43,29,41,63,51,54,44,57,35,41,58,52,45,62,53,47,52,39,53,51,65,44,51,59,71,61,43,58,49,52,44,56,57,53,52,64,66,39,58,47,35,58,56,56,55,41,38],"y":[172,98,122,170,170,142,120,142,145,137,150,165,142,142,164,138,178,112,118,127,145,114,154,155,142,148,130,130,168,170,120,168,170,184,122,150,140,170,134,174,175,144,145,130,144,184,170,135,115,116,150,138,160,154,165,142,110,160,140,148,180,138,160,140,144,100,140,110,168,135,106,124,125,150,135,185,139,140,150,110,190,175,140,152,130,120,175,146,155,132,155,176,160,120,100,150,140,160,130,130,174,150,140,118,100,160,160,188,162,172,150,150,90,150,140,130,110,110,120,116,160,110,180,116,132,136,98,150,150,146,150,100,140,180,185,128,164,170,137,150,170,125,185,137,140,170,184,158,167,129,142,140,160,155,118,137,115,152,130,150,172,120,155,165,138,175,150,145,140,165,134,180,100,126,155,135,160,160,170,120,140,132,156,180,138,135,148,150,120,154,141,138,179,114,97,127,99,120,140,140,86,120,118,116,133,131,111,107,160,130,161,130,139,180,135,69,138,80,126,153,160,128,150,144,135,100,120,139,135,86,160,112,137,141,154,128,126,165,133,110,136,96,151,96,137,135,160,105,121,140,161,111,180,159,125,144,178,180,181,143,159,139,152,157,130,138,170,150,186,163,179,156,165,184,157,179,175,168,96,173,169,171,150,186,149,163,143,116,142,148,179,173,178,168,126,178,140,145,163,164,151,133,162,175,163,143,138,153,170,162,162,114,151,152,163,169,158,178,165,160,172,192,168,182,125,172,179,158,167,122,149,172,170,162,155,161,154,159,152,152,131,115,174,163,194,122,173,162,147,157,160,156,175,161,122,158,151,151,178,160,154,187,166,165,202,172,172,154,147,170,174,182,132,162,190,185,146,160,156,172,182,143,142,148,188,123,157,162,137,171,172,171,162,173,153,148,115,169,155,152,152,131,179,174,144,163,169,166,182,173],"type":"scatter"},{"hovertemplate":"Age: %{x}\u003cbr\u003eMaxHR: %{y}\u003cextra\u003eEnfermedad (1)\u003c\u002fextra\u003e","marker":{"color":"#d95926","line":{"color":"#1a1a19","width":1.5},"opacity":0.8,"size":9},"mode":"markers","name":"Enfermedad (1)","x":[49,48,37,58,49,38,60,36,44,53,54,41,65,54,43,41,50,47,31,58,52,46,52,57,52,55,32,49,63,56,66,65,43,48,58,65,40,40,46,57,33,38,59,34,47,58,46,56,56,49,54,43,52,50,47,56,54,56,38,44,59,49,46,50,52,43,54,52,52,58,41,53,53,35,54,48,50,47,39,46,51,50,38,41,55,48,48,54,55,48,54,48,45,49,44,48,55,46,59,47,52,54,55,51,52,49,65,32,61,50,57,51,47,60,53,62,51,51,55,58,57,60,41,34,74,57,56,61,68,59,63,38,62,46,42,59,52,60,60,56,40,51,62,63,63,64,43,64,61,52,51,69,59,48,69,36,53,43,56,58,55,67,46,53,38,53,62,47,56,56,64,61,68,57,63,60,66,63,59,61,73,47,65,70,50,60,50,43,38,54,61,42,53,55,61,51,70,61,38,57,38,62,58,52,61,50,51,65,52,47,35,57,62,59,53,62,54,56,56,54,66,63,60,55,65,60,60,59,62,63,57,63,46,58,64,63,52,69,51,60,56,55,54,77,63,55,52,64,60,58,61,40,61,57,63,59,59,55,62,53,68,53,60,59,61,57,56,58,69,67,58,65,63,57,54,72,75,49,51,60,64,61,67,62,65,63,69,62,55,75,67,58,63,62,43,68,65,48,63,61,50,59,65,49,72,50,64,55,63,59,56,62,74,54,62,76,54,70,48,61,66,55,71,74,58,56,58,64,55,57,61,71,38,55,56,69,64,72,69,56,62,67,57,69,51,48,69,64,57,53,67,74,61,64,58,60,57,55,56,61,61,74,62,53,62,46,54,55,62,70,57,56,59,60,63,61,46,53,67,58,57,59,50,48,61,59,40,59,49,44,66,65,42,61,59,62,51,57,58,47,61,45,58,35,58,50,61,54,54,52,47,58,67,57,63,48,60,59,55,60,46,56,56,49,54,57,62,60,63,66,64,56,64,50,54,53,52,40,58,55,66,38,62,58,65,69,67,62,51,46,67,56,41,56,70,70,35,77,58,60,51,55,64,59,58,54,65,63,62,43,61,39,52,62,43,68,62,60,65,60,60,54,44,55,64,60,58,48,67,43,52,59,57,57,55,61,58,58,67,44,63,63,59,57,45,68,57,57],"y":[156,108,130,99,140,166,125,160,150,130,122,130,87,100,120,170,121,98,153,140,96,125,82,145,150,128,130,170,115,125,94,112,155,92,140,115,130,152,124,92,150,170,130,180,170,110,150,122,124,175,118,130,94,125,158,150,125,150,150,100,119,96,175,140,134,135,105,120,124,92,138,120,116,140,140,110,140,98,150,112,150,150,134,118,136,99,102,142,143,103,150,150,130,120,135,115,96,115,125,145,110,91,130,150,126,122,93,127,110,139,131,92,149,149,120,123,126,127,155,138,182,110,176,154,123,148,121,77,136,175,109,166,128,133,128,119,82,130,143,82,144,170,134,154,149,145,122,114,113,120,104,130,115,128,104,125,120,140,100,100,92,125,113,95,128,115,72,124,99,148,140,117,120,120,86,63,108,98,115,105,121,118,122,157,156,99,120,145,156,155,105,99,135,83,145,60,92,115,120,98,150,143,105,122,70,110,163,67,128,120,130,100,72,94,122,78,150,103,98,110,90,112,140,149,105,141,157,117,120,120,148,84,125,124,106,111,180,129,125,140,120,124,117,110,105,155,110,122,118,123,80,165,86,118,84,117,128,125,97,106,130,140,122,120,108,148,123,110,118,125,106,112,128,144,140,102,108,145,127,110,140,148,130,130,140,138,140,112,131,112,150,110,88,150,120,132,120,110,121,135,120,117,113,127,109,128,115,102,140,135,122,119,130,112,122,120,105,129,162,100,140,73,108,116,118,122,124,102,126,160,115,115,105,110,119,109,135,130,112,126,120,110,119,110,130,159,84,116,120,122,122,94,150,130,113,140,100,127,98,123,98,112,108,128,138,126,154,100,93,109,141,142,142,170,154,145,120,155,129,165,150,140,126,150,138,125,181,134,126,177,120,114,125,125,143,103,142,112,152,152,140,147,105,130,111,128,169,109,108,168,118,156,71,124,147,166,157,162,117,161,144,133,103,139,116,88,99,160,169,132,96,144,132,163,195,95,160,114,173,111,165,182,154,130,174,146,125,106,122,147,163,150,158,105,112,125,156,162,171,141,173,145,131,159,131,126,127,132,97,136,146,140,161,145,120,150,160,144,158,155,142,113,153,132,158,132,160,168,108,143,156,162,164,143,130,161,140,146,150,144,144,136,90,123,132,141,115,174],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"title":{"text":"Edad (a\u00f1os)","font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"yaxis":{"title":{"text":"Frecuencia card\u00edaca m\u00e1xima","font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"font":{"family":"Segoe UI, system-ui, sans-serif","color":"#c3c2b7","size":13},"margin":{"l":56,"r":18,"t":18,"b":48},"legend":{"font":{"color":"#c3c2b7"},"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"left","x":0,"bgcolor":"rgba(0,0,0,0)"},"hoverlabel":{"font":{"color":"#ffffff","size":13},"bgcolor":"#222226","bordercolor":"#2e2e33"},"height":400,"paper_bgcolor":"#1a1a19","plot_bgcolor":"#1a1a19","showlegend":true,"bargap":0.25},                        {"responsive": true}                    )                };                            </script>        </div></div></div>
+</div>
+<p><strong>Interpretación.</strong> La frecuencia máxima disminuye con la edad (r = −0,38), como es
+fisiológicamente esperable. Para una misma edad, los pacientes con enfermedad (naranja)
+tienden a quedar por debajo de los sanos (azul): la zona de arriba a la izquierda (jóvenes
+con frecuencia alta) es casi toda azul y la de abajo a la derecha, casi toda naranja. Aun
+así, no existe una frontera nítida, lo que anticipa que ningún modelo alcanzará una
+separación perfecta con estas variables.</p>
+</section>
+<section id="figura-5-correlacion-entre-variables-numericas">
+<h2><span class="section-number">2.6. </span>Figura 5 · Correlación entre variables numéricas<a class="headerlink" href="#figura-5-correlacion-entre-variables-numericas" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mostrar</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">fig_correlacion</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>  <span class="c1"># Mapa de calor de la correlación de Pearson</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>                <div id="188a339d-f280-465d-ba12-f958021f68cc" class="plotly-graph-div" style="height:420px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("188a339d-f280-465d-ba12-f958021f68cc")) {                    Plotly.newPlot(                        "188a339d-f280-465d-ba12-f958021f68cc",                        [{"colorbar":{"outlinewidth":0,"thickness":12,"tickfont":{"color":"#c3c2b7"},"title":{"text":"r"}},"colorscale":[[0,"#3987e5"],[0.5,"#383835"],[1,"#e66767"]],"hovertemplate":"%{y} vs %{x}\u003cbr\u003er = %{z:.2f}\u003cextra\u003e\u003c\u002fextra\u003e","text":[[1.0,0.25,-0.1,0.2,-0.38,0.26,0.28],[0.25,1.0,0.1,0.07,-0.11,0.16,0.11],[-0.1,0.1,1.0,-0.26,0.24,0.05,-0.23],[0.2,0.07,-0.26,1.0,-0.13,0.05,0.27],[-0.38,-0.11,0.24,-0.13,1.0,-0.16,-0.4],[0.26,0.16,0.05,0.05,-0.16,1.0,0.4],[0.28,0.11,-0.23,0.27,-0.4,0.4,1.0]],"textfont":{"color":"#ffffff","size":12},"texttemplate":"%{text:.2f}","x":["Age","RestingBP","Cholesterol","FastingBS","MaxHR","Oldpeak","HeartDisease"],"xgap":2,"y":["Age","RestingBP","Cholesterol","FastingBS","MaxHR","Oldpeak","HeartDisease"],"ygap":2,"z":[[1.0,0.25,-0.1,0.2,-0.38,0.26,0.28],[0.25,1.0,0.1,0.07,-0.11,0.16,0.11],[-0.1,0.1,1.0,-0.26,0.24,0.05,-0.23],[0.2,0.07,-0.26,1.0,-0.13,0.05,0.27],[-0.38,-0.11,0.24,-0.13,1.0,-0.16,-0.4],[0.26,0.16,0.05,0.05,-0.16,1.0,0.4],[0.28,0.11,-0.23,0.27,-0.4,0.4,1.0]],"zmax":1,"zmin":-1,"type":"heatmap"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"yaxis":{"autorange":"reversed","title":{"font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"xaxis":{"tickangle":-35,"title":{"font":{"color":"#c3c2b7"}},"tickfont":{"color":"#c3c2b7"},"gridcolor":"#2e2e33","zerolinecolor":"#2e2e33","linecolor":"#2e2e33"},"font":{"family":"Segoe UI, system-ui, sans-serif","color":"#c3c2b7","size":13},"margin":{"l":56,"r":18,"t":18,"b":48},"legend":{"font":{"color":"#c3c2b7"},"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"left","x":0,"bgcolor":"rgba(0,0,0,0)"},"hoverlabel":{"font":{"color":"#ffffff","size":13},"bgcolor":"#222226","bordercolor":"#2e2e33"},"height":420,"paper_bgcolor":"#1a1a19","plot_bgcolor":"#1a1a19","showlegend":false,"bargap":0.25},                        {"responsive": true}                    )                };                            </script>        </div></div></div>
+</div>
+<p><strong>Interpretación.</strong></p>
+<ul class="simple">
+<li><p><strong>Con el objetivo:</strong> las correlaciones más fuertes son <code class="docutils literal notranslate"><span class="pre">Oldpeak</span></code> (r = 0,40) y <code class="docutils literal notranslate"><span class="pre">MaxHR</span></code>
+(r = −0,40), seguidas de <code class="docutils literal notranslate"><span class="pre">Age</span></code> (0,28) y <code class="docutils literal notranslate"><span class="pre">FastingBS</span></code> (0,27).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Cholesterol</span></code></strong> aparece con correlación negativa (−0,23) por los ceros no medidos; al
+excluirlos pasa a ser débil y positiva (0,10).</p></li>
+<li><p><strong>Entre predictoras:</strong> la mayor es <code class="docutils literal notranslate"><span class="pre">Age</span></code>–<code class="docutils literal notranslate"><span class="pre">MaxHR</span></code> (−0,38). Ninguna supera 0,4 en valor
+absoluto, así que no hay multicolinealidad que justifique eliminar variables.</p></li>
+</ul>
+<p>La matriz solo incluye variables numéricas, y la correlación de Pearson solo mide relaciones
+lineales. Las variables más predictivas del problema son categóricas (<code class="docutils literal notranslate"><span class="pre">ST_Slope</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ChestPainType</span></code>) y no aparecen aquí; por eso el dashboard complementa esta figura con las
+tasas por categoría.</p>
+</section>
+<section id="detalle-que-no-aparece-en-el-dashboard-los-ceros-de-colesterol">
+<h2><span class="section-number">2.7. </span>Detalle que no aparece en el dashboard: los ceros de colesterol<a class="headerlink" href="#detalle-que-no-aparece-en-el-dashboard-los-ceros-de-colesterol" title="Link to this heading">#</a></h2>
+<p>El dashboard menciona el problema, pero no lo cuantifica por completo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sin_medir</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"Cholesterol"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>  <span class="c1"># Máscara de pacientes sin medición de colesterol</span>
+<span class="n">detalle</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>  <span class="c1"># Compara ambos grupos</span>
+    <span class="s2">"pacientes"</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">sin_medir</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span> <span class="nb">int</span><span class="p">((</span><span class="o">~</span><span class="n">sin_medir</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())],</span>  <span class="c1"># Tamaño de cada grupo</span>
+    <span class="s2">"tasa de enfermedad (%)"</span><span class="p">:</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sin_medir</span><span class="p">,</span> <span class="s2">"HeartDisease"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">sin_medir</span><span class="p">,</span> <span class="s2">"HeartDisease"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)],</span>  <span class="c1"># Tasa de enfermedad</span>
+    <span class="s2">"hombres (%)"</span><span class="p">:</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sin_medir</span><span class="p">,</span> <span class="s2">"Sex"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"M"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">sin_medir</span><span class="p">,</span> <span class="s2">"Sex"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"M"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)],</span>  <span class="c1"># Proporción de hombres</span>
+    <span class="s2">"edad mediana"</span><span class="p">:</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sin_medir</span><span class="p">,</span> <span class="s2">"Age"</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">sin_medir</span><span class="p">,</span> <span class="s2">"Age"</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()],</span>  <span class="c1"># Edad central</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">"Cholesterol = 0 (no medido)"</span><span class="p">,</span> <span class="s2">"Cholesterol &gt; 0"</span><span class="p">])</span>  <span class="c1"># Nombres de las filas</span>
+<span class="n">detalle</span>  <span class="c1"># Muestra la tabla</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pacientes</th>
+      <th>tasa de enfermedad (%)</th>
+      <th>hombres (%)</th>
+      <th>edad mediana</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Cholesterol = 0 (no medido)</th>
+      <td>172</td>
+      <td>88.4</td>
+      <td>93.6</td>
+      <td>57.5</td>
+    </tr>
+    <tr>
+      <th>Cholesterol &gt; 0</th>
+      <td>746</td>
+      <td>47.7</td>
+      <td>75.6</td>
+      <td>54.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Interpretación.</strong> Los pacientes sin medición de colesterol no son una muestra al azar:
+tienen una tasa de enfermedad muy superior (88,4 % frente a 47,7 %), son casi todos hombres
+(93,6 % frente a 75,6 %) y algo mayores (57,5 frente a 54 años de mediana). El dataset combina
+registros de cinco hospitales y es probable que alguno no midiera esa variable y atendiera
+casos más graves. Tres consecuencias para el modelado:</p>
+<ol class="arabic simple">
+<li><p>Eliminar esas filas descartaría casi una quinta parte de los datos y sesgaría la muestra.</p></li>
+<li><p>Dejar el cero como valor real engañaría a los modelos que usan distancias o escalas.</p></li>
+<li><p>La <strong>ausencia del dato es informativa</strong>: por eso el <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> imputa la mediana (aprendida
+en train) y agrega una columna indicadora de «dato faltante».</p></li>
+</ol>
+<p>Esa señal refleja cómo se recogieron los datos, no la fisiología. Un modelo desplegado en
+un hospital que siempre mide el colesterol no dispondrá de ella, y conviene vigilarlo con el
+monitoreo de deriva.</p>
+</section>
+<section id="sintesis-del-analisis-exploratorio">
+<h2><span class="section-number">2.8. </span>Síntesis del análisis exploratorio<a class="headerlink" href="#sintesis-del-analisis-exploratorio" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hallazgo</p></th>
+<th class="head"><p>Evidencia</p></th>
+<th class="head"><p>Consecuencia para el modelado</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Clases casi balanceadas</p></td>
+<td><p>55,3 % / 44,7 %</p></td>
+<td><p>Sin remuestreo; particiones estratificadas</p></td>
+</tr>
+<tr class="row-odd"><td><p>La prueba de esfuerzo concentra la señal</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ST_Slope</span></code>, <code class="docutils literal notranslate"><span class="pre">ExerciseAngina</span></code>, <code class="docutils literal notranslate"><span class="pre">Oldpeak</span></code>, <code class="docutils literal notranslate"><span class="pre">MaxHR</span></code></p></td>
+<td><p>Se esperan AUC altos incluso con modelos simples</p></td>
+</tr>
+<tr class="row-even"><td><p>Variables categóricas muy informativas</p></td>
+<td><p>Tasas entre 14 % y 85 % según la categoría</p></td>
+<td><p>Codificación <em>one-hot</em> dentro del <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Ceros imposibles e informativos</p></td>
+<td><p>172 en <code class="docutils literal notranslate"><span class="pre">Cholesterol</span></code>, 1 en <code class="docutils literal notranslate"><span class="pre">RestingBP</span></code></p></td>
+<td><p>Imputación con mediana de train + indicador</p></td>
+</tr>
+<tr class="row-even"><td><p>Sin multicolinealidad</p></td>
+<td><p>Correlación máxima entre predictoras: 0,38</p></td>
+<td><p>Se conservan las 11 variables</p></td>
+</tr>
+<tr class="row-odd"><td><p>Muestra mayoritariamente masculina</p></td>
+<td><p>79 % hombres</p></td>
+<td><p>Cautela al generalizar a mujeres</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../informe/1_contexto.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Contexto del problema</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="4_informe_modelos.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Sección ML Models del dashboard: resultados e interpretación</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indicadores-de-cabecera">2.1. Indicadores de cabecera</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-1-variable-objetivo">2.2. Figura 1 · Variable objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-2-distribucion-de-una-variable-numerica-por-clase">2.3. Figura 2 · Distribución de una variable numérica por clase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-3-variables-categoricas-frente-al-objetivo">2.4. Figura 3 · Variables categóricas frente al objetivo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-4-relacion-entre-dos-variables-numericas">2.5. Figura 4 · Relación entre dos variables numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figura-5-correlacion-entre-variables-numericas">2.6. Figura 5 · Correlación entre variables numéricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detalle-que-no-aparece-en-el-dashboard-los-ceros-de-colesterol">2.7. Detalle que no aparece en el dashboard: los ceros de colesterol</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sintesis-del-analisis-exploratorio">2.8. Síntesis del análisis exploratorio</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Daniel Serrano Romero
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
