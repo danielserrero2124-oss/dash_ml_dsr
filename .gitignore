@@ -10,3 +10,6 @@ __pycache__/
 # Configuración local del asistente y del editor
 .claude/
 .vscode/
+
+# Jupyter Book construido (se publica aparte en la rama gh-pages)
+_build/

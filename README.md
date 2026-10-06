@@ -39,6 +39,19 @@ repositorio y se pulsa **Apply**. Render instala las dependencias, arranca
 En el plan gratuito el servicio se suspende tras 15 minutos sin visitas y tarda cerca de un
 minuto en despertar.
 
+## Informe del desarrollo (Jupyter Book)
+
+Segundo entregable: un libro con la interpretación de cada resultado del dashboard y los
+detalles que el dashboard no muestra (fuga de datos, siete modelos, API, Docker, Kubernetes,
+CI y monitoreo). Sus capítulos están en `intro.md`, `informe/` y `notebooks/`. Para construirlo
+(con un entorno que tenga `jupyter-book`):
+
+```bash
+jupyter-book build .
+```
+
+El resultado queda en `_build/html/index.html`.
+
 ## Resultados
 
 | Elemento | Resultado |

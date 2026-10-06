@@ -1,0 +1,14 @@
+# Tabla de contenido del Jupyter Book
+format: jb-book  # Formato de libro
+root: intro  # Página de inicio (intro.md)
+options:
+  numbered: true  # Numera los capítulos
+chapters:
+  - file: informe/1_contexto  # 1. Contexto del problema (pestaña Contexto)
+  - file: notebooks/3_informe_eda  # 2. Figuras e interpretación de la pestaña EDA
+  - file: notebooks/4_informe_modelos  # 3. Resultados e interpretación de la pestaña ML Models
+  - file: notebooks/1_model_leakage_demo  # 4. Fuga de datos y comparación de siete modelos
+  - file: notebooks/2_model_pipeline_cv  # 5. Pipeline, evaluación, exportación y monitoreo
+  - file: informe/6_dashboard  # 6. Arquitectura y diseño del dashboard
+  - file: informe/7_mlops  # 7. API, Docker, Kubernetes e integración continua
+  - file: informe/8_conclusiones  # 8. Conclusiones
