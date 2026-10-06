@@ -31,6 +31,14 @@ Se abre en <http://localhost:8050>. Los modelos ya están entrenados en
 .venv\Scripts\python -m dashboard.modelos
 ```
 
+### Publicación en Render
+
+El archivo `render.yaml` describe el servicio. En Render: **New → Blueprint**, se elige este
+repositorio y se pulsa **Apply**. Render instala las dependencias, arranca
+`gunicorn dashboard.app:server` y entrega una URL pública (`https://<nombre>.onrender.com`).
+En el plan gratuito el servicio se suspende tras 15 minutos sin visitas y tarda cerca de un
+minuto en despertar.
+
 ## Resultados
 
 | Elemento | Resultado |
@@ -40,6 +48,9 @@ Se abre en <http://localhost:8050>. Los modelos ya están entrenados en
 | AUC en test | 0,930 |
 | Sensibilidad / especificidad en test | 94,1 % / 84,1 % |
 | Pruebas automáticas | 14 de 14 (API y dashboard) |
+| Imagen Docker | `heart-api` (648 MB), contenedor en estado *healthy* |
+| Kubernetes (Docker Desktop) | Deployment 1/1 disponible; Service en `http://localhost:80` |
+| Integración continua | GitHub Actions en verde |
 | Deriva train → test | 1 de 11 variables; sin deriva del dataset |
 
 ## Estructura
@@ -74,6 +85,7 @@ proyecto_heart_disease/
 ├── drift_report.html           # Reporte de deriva (train vs test)
 ├── drift_report_simulado.html  # Reporte de deriva con una población simulada
 ├── model.joblib                # Copia del modelo (estructura de la Etapa 0)
+├── render.yaml                 # Despliegue del dashboard en Render
 ├── requirements-dev.txt        # Entorno de desarrollo
 └── README.md
 ```
@@ -154,8 +166,11 @@ kubectl get pods,svc
 minikube service heart-service
 ```
 
-El último comando abre la URL del servicio. Con el Kubernetes de Docker Desktop no hace
-falta `minikube image load` y el servicio queda en <http://localhost:80>.
+El último comando abre la URL del servicio.
+
+Con el Kubernetes de Docker Desktop (el usado en este proyecto) no hacen falta `minikube start`,
+`minikube image load` ni `minikube service`: basta con los dos `kubectl apply`, y el servicio
+queda en <http://localhost:80>. Para retirar el despliegue: `kubectl delete -f k8s/`.
 
 ## Etapa 5 — Integración continua
 

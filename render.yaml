@@ -1,0 +1,14 @@
+# Configuración de despliegue en Render (Blueprint): publica el dashboard como servicio web.
+# En Render: New → Blueprint → elegir este repositorio → Apply.
+services:
+  - type: web                      # Servicio web accesible por una URL pública
+    name: heart-disease-dashboard  # Nombre del servicio (define la URL: <nombre>.onrender.com)
+    runtime: python                # Entorno de ejecución de Python administrado por Render
+    plan: free                     # Plan gratuito
+    buildCommand: pip install -r docker/requirements.txt -r dashboard/requirements.txt   # Instala las dependencias de los modelos y del dashboard
+    startCommand: gunicorn dashboard.app:server --bind 0.0.0.0:$PORT --workers 1 --timeout 120   # Arranca el dashboard con gunicorn en el puerto que asigna Render
+    healthCheckPath: /             # Ruta que Render consulta para saber si el servicio está listo
+    autoDeploy: true               # Vuelve a desplegar automáticamente con cada push a la rama principal
+    envVars:
+      - key: PYTHON_VERSION        # Versión de Python que debe usar Render
+        value: 3.10.14             # La misma serie 3.10 de la imagen Docker y de la integración continua
