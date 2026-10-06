@@ -1,0 +1,43 @@
+# Deployment: le indica a Kubernetes qué contenedor ejecutar y cuántas copias mantener vivas.
+# Aplicar con:  kubectl apply -f k8s/deployment.yaml
+apiVersion: apps/v1            # Versión de la API de Kubernetes para objetos Deployment
+kind: Deployment               # Tipo de objeto: despliegue de una aplicación sin estado
+metadata:
+  name: heart-model            # Nombre del Deployment dentro del clúster
+  labels:
+    app: heart-model           # Etiqueta para identificar y agrupar los recursos de esta aplicación
+spec:
+  replicas: 1                  # Número de copias (pods) de la API que deben estar corriendo
+  selector:
+    matchLabels:
+      app: heart-model         # El Deployment administra los pods que tengan esta etiqueta
+  template:                    # Plantilla con la que se crea cada pod
+    metadata:
+      labels:
+        app: heart-model       # Etiqueta que recibe cada pod (debe coincidir con el selector)
+    spec:
+      containers:
+      - name: model            # Nombre del contenedor dentro del pod
+        image: heart-api:latest          # Imagen local construida con docker build (para Docker Hub: <TU_USUARIO_DOCKER>/heart-api)
+        imagePullPolicy: IfNotPresent    # Usa la imagen local si existe; solo la descarga si no está en el nodo
+        ports:
+        - containerPort: 8000  # Puerto en el que escucha uvicorn dentro del contenedor
+        readinessProbe:        # Prueba de disponibilidad: el pod recibe tráfico solo cuando /health responde
+          httpGet:
+            path: /health      # Ruta de comprobación de estado de la API
+            port: 8000         # Puerto de la comprobación
+          initialDelaySeconds: 5   # Espera inicial antes de la primera comprobación (carga del modelo)
+          periodSeconds: 10        # Frecuencia de la comprobación
+        livenessProbe:         # Prueba de vida: Kubernetes reinicia el contenedor si /health deja de responder
+          httpGet:
+            path: /health      # Misma ruta de comprobación
+            port: 8000         # Mismo puerto
+          initialDelaySeconds: 15  # Margen para que el servidor termine de arrancar
+          periodSeconds: 20        # Frecuencia de la comprobación
+        resources:
+          requests:            # Recursos mínimos garantizados al contenedor
+            cpu: 100m          # 0,1 núcleo de CPU
+            memory: 256Mi      # 256 MiB de memoria
+          limits:              # Recursos máximos que puede consumir
+            cpu: 500m          # 0,5 núcleo de CPU
+            memory: 512Mi      # 512 MiB de memoria

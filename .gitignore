@@ -1,0 +1,12 @@
+# Entorno virtual local (se recrea con requirements-dev.txt)
+.venv/
+
+# Archivos temporales de Python, Jupyter y pytest
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Configuración local del asistente y del editor
+.claude/
+.vscode/

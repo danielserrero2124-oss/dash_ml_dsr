@@ -1,0 +1,24 @@
+# Integración continua: en cada push se instalan las dependencias, se revisa el estilo y se ejecutan las pruebas.
+name: CI                               # Nombre del flujo que aparece en la pestaña Actions de GitHub
+
+on: [push]                             # El flujo se dispara con cada push a cualquier rama
+
+jobs:
+  build:                               # Único trabajo del flujo
+    runs-on: ubuntu-latest             # Máquina virtual Linux que provee GitHub
+    steps:
+      - uses: actions/checkout@v4      # Descarga el código del repositorio en la máquina virtual
+      - name: Set up Python            # Paso: instalar Python
+        uses: actions/setup-python@v5  # Acción oficial para configurar Python
+        with:
+          python-version: '3.10'       # Misma versión de Python que la imagen Docker
+          cache: pip                   # Guarda en caché los paquetes para acelerar ejecuciones posteriores
+      - name: Install dependencies     # Paso: instalar dependencias
+        run: |
+          pip install -r docker/requirements.txt   # Dependencias de la API (las mismas de producción)
+          pip install -r dashboard/requirements.txt  # Dependencias del dashboard (Dash y Plotly)
+          pip install flake8 pytest                # Herramientas de revisión de estilo y de pruebas
+      - name: Lint                     # Paso: revisión de estilo del código
+        run: flake8 app/ tests/ src/ dashboard/   # Falla si hay errores de estilo o de sintaxis (configuración en .flake8)
+      - name: Tests                    # Paso: pruebas automáticas
+        run: pytest tests/ -v          # Ejecuta las pruebas de la API y del dashboard con los modelos versionados

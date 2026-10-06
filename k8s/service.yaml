@@ -1,0 +1,14 @@
+# Service: expone los pods de la API bajo una dirección estable y reparte el tráfico entre ellos.
+# Aplicar con:  kubectl apply -f k8s/service.yaml
+apiVersion: v1                 # Versión de la API de Kubernetes para objetos Service
+kind: Service                  # Tipo de objeto: punto de acceso de red a un conjunto de pods
+metadata:
+  name: heart-service          # Nombre del Service dentro del clúster
+spec:
+  selector:
+    app: heart-model           # Envía el tráfico a los pods con esta etiqueta (los del Deployment)
+  ports:
+    - protocol: TCP            # Protocolo de transporte
+      port: 80                 # Puerto en el que el Service recibe las peticiones
+      targetPort: 8000         # Puerto del contenedor al que se reenvían (uvicorn)
+  type: LoadBalancer           # Expone el servicio fuera del clúster (en Minikube: minikube service heart-service)

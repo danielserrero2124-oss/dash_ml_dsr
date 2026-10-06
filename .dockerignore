@@ -1,0 +1,15 @@
+# Archivos que no se envían al construir la imagen Docker (la imagen solo necesita app/ y docker/requirements.txt)
+.venv
+.git
+.github
+notebooks
+fuentes
+data
+tests
+k8s
+src
+herramientas
+dashboard
+*.html
+model.joblib
+**/__pycache__

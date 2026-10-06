@@ -1,0 +1,12 @@
+# Entorno de desarrollo: todo lo necesario para ejecutar notebooks, pruebas, estilo y monitoreo.
+-r docker/requirements.txt   # Dependencias de la API (mismas versiones que en producción)
+-r dashboard/requirements.txt   # Dependencias del dashboard (Dash y Plotly)
+scipy==1.11.2                # Requerido por scikit-learn y por las pruebas estadísticas
+matplotlib==3.7.2            # Gráficos de los notebooks
+seaborn==0.12.2              # Gráficos estadísticos de los notebooks
+evidently==0.4.40            # Reportes de deriva de datos (API evidently.report del enunciado)
+pytest==8.3.4                # Pruebas automáticas
+flake8==7.1.1                # Revisión de estilo
+ipykernel                    # Kernel de Jupyter para ejecutar los notebooks
+nbconvert                    # Ejecución de notebooks por línea de comandos
+nbformat                     # Lectura y escritura de notebooks

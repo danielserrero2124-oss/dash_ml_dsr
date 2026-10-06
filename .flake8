@@ -1,0 +1,6 @@
+# Configuración de flake8 (revisión de estilo).
+[flake8]
+# El código lleva un comentario explicativo en cada línea, por eso se permite un ancho mayor al estándar de 79.
+max-line-length = 240
+# Carpetas que no se revisan.
+exclude = .venv,.git,__pycache__,notebooks,fuentes

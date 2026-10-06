@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Tema visual del dashboard (Dash carga automáticamente los archivos de assets/)
+   ========================================================================== */
+
+/* Variables de color y medida reutilizadas en toda la hoja de estilos */
+:root {
+  --fondo: #0f1014;            /* Color de fondo general de la página */
+  --superficie: #1a1a19;       /* Fondo de las tarjetas y de los gráficos */
+  --superficie-2: #222226;     /* Fondo de controles (desplegables, entradas) */
+  --borde: #2e2e33;            /* Líneas divisorias y bordes */
+  --texto: #ffffff;            /* Texto principal */
+  --texto-2: #c3c2b7;          /* Texto secundario */
+  --texto-3: #8b8a82;          /* Texto atenuado (etiquetas pequeñas) */
+  --acento: #e5484d;           /* Color de marca (rojo corazón), no se usa para datos */
+  --azul: #3987e5;             /* Serie 1 de los gráficos */
+  --naranja: #d95926;          /* Serie 2 de los gráficos */
+  --radio: 16px;               /* Redondeo de las tarjetas */
+}
+
+/* Página completa: fondo oscuro con dos resplandores suaves y tipografía del sistema */
+body {
+  margin: 0;                                             /* Sin margen exterior */
+  background:
+    radial-gradient(900px 500px at 12% -10%, rgba(229, 72, 77, 0.16), transparent 60%),   /* Resplandor rojo arriba a la izquierda */
+    radial-gradient(900px 500px at 95% 0%, rgba(57, 135, 229, 0.14), transparent 60%),    /* Resplandor azul arriba a la derecha */
+    var(--fondo);                                        /* Color base */
+  background-attachment: fixed;                          /* El fondo no se desplaza con el contenido */
+  color: var(--texto);                                   /* Color de texto por defecto */
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;   /* Tipografía del sistema */
+}
+
+/* Contenedor central con ancho máximo */
+.contenedor {
+  max-width: 1380px;           /* Ancho máximo del contenido */
+  margin: 0 auto;              /* Centrado horizontal */
+  padding: 22px 26px 60px;     /* Espacio interior */
+}
+
+/* Encabezado: marca a la izquierda y autor a la derecha */
+.encabezado {
+  display: flex;                    /* Elementos en fila */
+  align-items: center;              /* Centrados verticalmente */
+  justify-content: space-between;   /* Separados a los extremos */
+  gap: 16px;                        /* Separación mínima entre elementos */
+  flex-wrap: wrap;                  /* Pasan a otra línea en pantallas angostas */
+  margin-bottom: 18px;              /* Espacio bajo el encabezado */
+}
+.marca { display: flex; align-items: center; gap: 14px; }   /* Icono y títulos alineados */
+.marca-icono {
+  width: 46px; height: 46px;                                  /* Tamaño del icono */
+  border-radius: 14px;                                        /* Esquinas redondeadas */
+  background: linear-gradient(135deg, #ff7a5c, #a3243b);      /* Degradado rojo */
+  display: grid; place-items: center;                         /* Centra el símbolo */
+  font-size: 24px;                                            /* Tamaño del símbolo */
+  box-shadow: 0 8px 24px rgba(229, 72, 77, 0.35);             /* Sombra de color */
+}
+.marca h1 { font-size: 21px; margin: 0; font-weight: 700; letter-spacing: 0.2px; }   /* Título principal */
+.marca p { margin: 2px 0 0; font-size: 13px; color: var(--texto-2); }                 /* Subtítulo */
+.autor { text-align: right; font-size: 13px; color: var(--texto-2); line-height: 1.5; }   /* Bloque del autor */
+.autor b { color: var(--texto); }                                                         /* Nombre resaltado */
+
+/* Pestañas de navegación (Contexto, EDA, ML Models) */
+.pestanas { border: none !important; margin-bottom: 20px; }          /* Sin borde del contenedor */
+.pestanas .tab {
+  background: transparent !important;          /* Sin fondo */
+  border: none !important;                     /* Sin bordes por defecto */
+  border-bottom: 2px solid var(--borde) !important;   /* Línea inferior tenue */
+  color: var(--texto-2) !important;            /* Texto secundario */
+  padding: 12px 22px !important;               /* Espacio interior */
+  font-weight: 600;                            /* Texto seminegrita */
+  font-size: 15px;                             /* Tamaño del texto */
+  transition: color 0.2s, border-color 0.2s;   /* Transición suave al pasar el cursor */
+}
+.pestanas .tab:hover { color: var(--texto) !important; }             /* Resalta al pasar el cursor */
+.pestanas .tab--selected {
+  color: var(--texto) !important;                         /* Texto principal en la pestaña activa */
+  border-bottom: 2px solid var(--acento) !important;      /* Línea de acento bajo la pestaña activa */
+  background: linear-gradient(180deg, transparent, rgba(229, 72, 77, 0.10)) !important;   /* Brillo sutil */
+}
+
+/* Tarjetas */
+.tarjeta {
+  background: var(--superficie);               /* Fondo de la tarjeta */
+  border: 1px solid var(--borde);              /* Borde fino */
+  border-radius: var(--radio);                 /* Esquinas redondeadas */
+  padding: 18px 20px;                          /* Espacio interior */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28); /* Sombra suave */
+  height: 100%;                                /* Ocupa todo el alto de su celda */
+  box-sizing: border-box;                      /* El padding cuenta dentro del tamaño */
+}
+.tarjeta h3 { margin: 0 0 4px; font-size: 16px; font-weight: 650; }                    /* Título de la tarjeta */
+.tarjeta .nota { margin: 0 0 12px; font-size: 13px; color: var(--texto-2); line-height: 1.5; }   /* Texto explicativo */
+.tarjeta p { color: var(--texto-2); line-height: 1.65; font-size: 14.5px; }            /* Párrafos */
+.tarjeta li { color: var(--texto-2); line-height: 1.7; font-size: 14.5px; }            /* Elementos de lista */
+.tarjeta b, .tarjeta strong { color: var(--texto); }                                   /* Negritas en color principal */
+
+/* Rejillas de distribución */
+.rejilla { display: grid; gap: 18px; margin-bottom: 18px; }                 /* Rejilla base */
+.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }               /* Dos columnas iguales */
+.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }               /* Tres columnas iguales */
+.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }               /* Cuatro columnas iguales */
+.cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }               /* Cinco columnas iguales */
+.cols-heroe { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }    /* Texto algo más ancho que la imagen */
+.cols-control { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }     /* Columna angosta de controles y ancha de gráfico */
+@media (max-width: 1000px) {                                                /* En pantallas angostas... */
+  .cols-2, .cols-3, .cols-heroe, .cols-control { grid-template-columns: 1fr; }   /* ...todo pasa a una columna */
+  .cols-4, .cols-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); }         /* ...y los indicadores a dos */
+}
+
+/* Indicadores numéricos (KPI) */
+.kpi .etiqueta { font-size: 12.5px; color: var(--texto-3); text-transform: uppercase; letter-spacing: 0.7px; }   /* Nombre del indicador */
+.kpi .valor { font-size: 30px; font-weight: 700; margin-top: 6px; line-height: 1.1; }                            /* Cifra grande */
+.kpi .detalle { font-size: 12.5px; color: var(--texto-2); margin-top: 6px; }                                     /* Aclaración bajo la cifra */
+
+/* Sección de portada del contexto */
+.heroe h2 { font-size: 30px; line-height: 1.2; margin: 0 0 12px; }               /* Titular */
+.heroe .resaltado { color: #ff8a70; }                                            /* Palabras destacadas del titular */
+.imagen-heroe { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radio); display: block; }   /* Imagen que llena su tarjeta */
+.sin-relleno { padding: 0; overflow: hidden; }                                   /* Tarjeta sin espacio interior (para la imagen) */
+
+/* Etiquetas de los controles */
+.control-etiqueta { display: block; font-size: 12.5px; color: var(--texto-3); text-transform: uppercase; letter-spacing: 0.6px; margin: 12px 0 6px; }
+
+/* Desplegables de Dash (dcc.Dropdown) en tema oscuro */
+.Select-control {
+  background-color: var(--superficie-2) !important;   /* Fondo del desplegable */
+  border: 1px solid var(--borde) !important;          /* Borde */
+  border-radius: 10px !important;                     /* Esquinas redondeadas */
+  color: var(--texto) !important;                     /* Color del texto */
+  min-height: 40px;                                   /* Alto cómodo para hacer clic */
+}
+.is-focused:not(.is-open) > .Select-control { border-color: var(--azul) !important; box-shadow: 0 0 0 2px rgba(57, 135, 229, 0.25) !important; }   /* Resalta al enfocar */
+.Select-value-label, .Select-placeholder, .Select--single > .Select-control .Select-value { color: var(--texto) !important; line-height: 38px !important; }   /* Texto de la opción elegida */
+.Select-input > input { color: var(--texto) !important; }                 /* Texto al escribir para buscar */
+.Select-arrow { border-top-color: var(--texto-2) !important; }            /* Flecha del desplegable */
+.Select-menu-outer {
+  background-color: var(--superficie-2) !important;   /* Fondo de la lista de opciones */
+  border: 1px solid var(--borde) !important;          /* Borde de la lista */
+  border-radius: 10px !important;                     /* Esquinas redondeadas */
+  margin-top: 4px;                                    /* Separación del control */
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);         /* Sombra para que flote sobre el contenido */
+  z-index: 50 !important;                             /* Por encima de los gráficos */
+  overflow: hidden;                                   /* Recorta las opciones a las esquinas redondeadas */
+}
+.Select-option, .VirtualizedSelectOption { background-color: var(--superficie-2) !important; color: var(--texto-2) !important; }   /* Opciones normales */
+.Select-option.is-focused, .VirtualizedSelectFocusedOption { background-color: rgba(57, 135, 229, 0.18) !important; color: var(--texto) !important; }   /* Opción bajo el cursor */
+.Select-option.is-selected, .VirtualizedSelectSelectedOption { color: var(--texto) !important; font-weight: 600; }                  /* Opción seleccionada */
+
+/* Botones de opción y casillas (dcc.RadioItems, dcc.Checklist) con forma de píldora */
+.opciones label {
+  display: inline-flex; align-items: center; gap: 6px;   /* Marcador y texto alineados */
+  margin: 0 8px 8px 0;                                   /* Separación entre opciones */
+  padding: 7px 13px;                                     /* Espacio interior */
+  border: 1px solid var(--borde);                        /* Borde */
+  border-radius: 999px;                                  /* Forma de píldora */
+  background: var(--superficie-2);                       /* Fondo */
+  color: var(--texto-2);                                 /* Color del texto */
+  font-size: 13.5px;                                     /* Tamaño del texto */
+  cursor: pointer;                                       /* Cursor de mano */
+}
+.opciones input { accent-color: var(--azul); }           /* Color del marcador nativo */
+
+/* Campos numéricos del formulario de predicción */
+.entrada {
+  width: 100%; box-sizing: border-box;          /* Ocupa todo el ancho disponible */
+  background: var(--superficie-2);              /* Fondo */
+  border: 1px solid var(--borde);               /* Borde */
+  border-radius: 10px;                          /* Esquinas redondeadas */
+  color: var(--texto);                          /* Color del texto */
+  padding: 9px 12px; font-size: 14px;           /* Espacio interior y tamaño de letra */
+}
+.entrada:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 2px rgba(57, 135, 229, 0.25); }   /* Resalta al enfocar */
+
+/* Control deslizante (dcc.Slider) */
+.rc-slider-rail { background-color: var(--borde) !important; }                                   /* Riel sin recorrer */
+.rc-slider-track { background-color: var(--azul) !important; }                                   /* Tramo recorrido */
+.rc-slider-handle { border-color: var(--azul) !important; background-color: #fff !important; opacity: 1 !important; }   /* Tirador */
+.rc-slider-mark-text { color: var(--texto-3) !important; }                                       /* Marcas numéricas */
+.rc-slider-tooltip-inner { background-color: var(--superficie-2) !important; color: var(--texto) !important; }   /* Globo con el valor */
+
+/* Tablas */
+.tabla { width: 100%; border-collapse: collapse; font-size: 13.5px; }                                       /* Tabla a todo el ancho */
+.tabla th { text-align: left; color: var(--texto-3); font-weight: 600; padding: 8px 10px; border-bottom: 1px solid var(--borde); text-transform: uppercase; font-size: 11.5px; letter-spacing: 0.6px; }   /* Encabezados */
+.tabla td { padding: 9px 10px; border-bottom: 1px solid var(--borde); color: var(--texto-2); }              /* Celdas */
+.tabla tr.activa td { color: var(--texto); background: rgba(57, 135, 229, 0.10); }                          /* Fila del modelo seleccionado */
+.tabla td.num, .tabla th.num { text-align: right; font-variant-numeric: tabular-nums; }                     /* Números alineados a la derecha */
+.tabla code { color: #9ec5f4; background: rgba(57, 135, 229, 0.10); padding: 1px 6px; border-radius: 6px; } /* Nombres de variables */
+
+/* Etiquetas de estado y pasos numerados */
+.chip { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid var(--borde); color: var(--texto-2); margin: 0 6px 6px 0; }   /* Etiqueta pequeña */
+.paso { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }                           /* Fila de un paso */
+.paso-numero { flex: 0 0 28px; height: 28px; border-radius: 50%; background: rgba(57, 135, 229, 0.18); color: #9ec5f4; display: grid; place-items: center; font-weight: 700; font-size: 13px; }   /* Círculo con el número */
+.paso-texto { color: var(--texto-2); font-size: 14px; line-height: 1.55; }                                  /* Texto del paso */
+
+/* Resultado de la predicción individual */
+.resultado { text-align: center; padding-top: 4px; }                                    /* Bloque centrado */
+.resultado .diagnostico { font-size: 18px; font-weight: 700; margin-top: -6px; }        /* Texto del resultado */
+.pie { text-align: center; color: var(--texto-3); font-size: 12.5px; margin-top: 26px; }   /* Pie de página */

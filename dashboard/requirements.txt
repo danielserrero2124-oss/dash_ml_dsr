@@ -1,0 +1,4 @@
+# Dependencias del dashboard (además de las de docker/requirements.txt)
+dash==2.18.2            # Framework del dashboard interactivo
+plotly==5.24.1          # Gráficos interactivos
+gunicorn==23.0.0; sys_platform != "win32"   # Servidor para publicar el dashboard en la nube (no se usa en Windows)

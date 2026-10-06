@@ -1,0 +1,11 @@
+# Dependencias de la API en producción (imagen Docker) y de las pruebas en CI.
+# Las versiones están fijadas: el modelo se guardó con scikit-learn 1.3.0 y debe
+# cargarse con la misma versión para garantizar predicciones idénticas.
+fastapi==0.115.6        # Framework web de la API
+uvicorn==0.34.0         # Servidor ASGI que ejecuta la API
+scikit-learn==1.3.0     # Librería con la que se entrenó el modelo (misma versión que en el entrenamiento)
+joblib==1.3.2           # Carga del archivo model.joblib
+pydantic==2.10.4        # Validación de los datos de entrada
+pandas==2.1.0           # El modelo recibe un DataFrame con nombres de columnas
+numpy==1.25.2           # Cálculo numérico (compatible con scikit-learn 1.3.0)
+httpx==0.28.1           # Requerido por el cliente de pruebas de FastAPI (pytest)
